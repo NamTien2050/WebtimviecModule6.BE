@@ -2,10 +2,12 @@ package com.example.casestudymodule6nhomculiee.controller;
 import com.example.casestudymodule6nhomculiee.dto.ResponMessage;
 import com.example.casestudymodule6nhomculiee.model.User.AppRole;
 import com.example.casestudymodule6nhomculiee.model.User.AppUser;
+import com.example.casestudymodule6nhomculiee.model.User.VerifiAccount;
 import com.example.casestudymodule6nhomculiee.securityJWT.UserRespo;
 import com.example.casestudymodule6nhomculiee.service.AppRoleService;
 import com.example.casestudymodule6nhomculiee.service.AppUserService;
 import com.example.casestudymodule6nhomculiee.service.JwtService;
+import com.example.casestudymodule6nhomculiee.service.VerifiAccService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,10 +40,12 @@ public class RestLoginController {
 
     @Autowired
     JavaMailSender javaMailSender;
+    @Autowired
+    VerifiAccService verifiAccService;
 
 
     @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserRespo> login(HttpServletRequest request, @RequestBody AppUser user) {
+    public ResponseEntity<?> login(HttpServletRequest request, @RequestBody AppUser user) {
         AppUser appUser = userService.loadUserByUsername(user.getUsername());
 
         Long id = appUser.getId();
@@ -53,8 +57,9 @@ public class RestLoginController {
                 result = jwtService.generateTokenLogin(user.getUsername());
                 httpStatus = HttpStatus.OK;
             } else {
-                result = "Wrong userId and password";
+                result = "Wrong userId and password not verification";
                 httpStatus = HttpStatus.BAD_REQUEST;
+                return new ResponseEntity<>(result,httpStatus);
             }
         } catch (Exception ex) {
             result = "Server Error";
@@ -76,13 +81,36 @@ public class RestLoginController {
         AppRole role = roleService.findById(3L).get();
         System.out.println(role.getName());
         appUser.setRoll(role);
+        appUser.setStatus(false);
+
         userService.add(appUser);
+        AppUser appUser1 = userService.loadUserByUsername(appUser.getUsername());
+        String token = jwtService.generateTokenLogin(appUser.getUsername());
+        VerifiAccount verifiAccount = new VerifiAccount();
+        verifiAccount.setIdAcc(appUser1.getId());
+        verifiAccount.setToken(token);
+        VerifiAccount newVerifi = verifiAccService.add(verifiAccount);
+
         SimpleMailMessage sendmail = new SimpleMailMessage();
         sendmail.setTo(appUser.getEmail());
         sendmail.setSubject("Bấm vào link bên dưới để xác thực email!");
-     //   sendmail.setText("https://vilo-vn.herokuapp.com/account/verification/" + newVerifi.getId() + "/" + acc.getId() + "?token=" + token);
+        sendmail.setText("http://localhost:8080/rest/verification/" + newVerifi.getId() + "/" + appUser1.getId() + "?token=" + token);
+
         javaMailSender.send(sendmail);
-        return new ResponseEntity<>("yes",HttpStatus.OK);
+        return new ResponseEntity<>(new ResponMessage("yes"),HttpStatus.OK);
+
+
+    }
+    @GetMapping("/verification/{id}/{idAcc}")
+    public ResponseEntity<String> verification(@RequestParam("token") String token, @PathVariable("id") Long id, @PathVariable("idAcc") Long idAcc) {
+        VerifiAccount verifiAccount = verifiAccService.findById(id).get();
+        AppUser appUser = userService.findById(idAcc);
+        if (verifiAccount.getToken().equals(token)) {
+            appUser.setStatus(true);
+            userService.add(appUser);
+            return new ResponseEntity<>("Bấm vào link để đăng nhập https://localhost:8080/rest/login", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Xác thực hết hiệu lực!", HttpStatus.OK);
     }
 
 

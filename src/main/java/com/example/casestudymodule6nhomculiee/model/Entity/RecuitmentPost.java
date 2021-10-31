@@ -17,7 +17,8 @@ public class RecuitmentPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private double salary;
+    private double minSalary;
+    private double maxSalary;
     private int quantity;
     private String gender;
     private String skill; // JAVA,PHP
@@ -27,7 +28,7 @@ public class RecuitmentPost {
     private String description;
     private LocalDate Date;
     private String field; //Lĩnh vực : tài chính, IT;
-    private String agency; //List
+    private String location; //List
     private boolean status;
 
     @ManyToOne

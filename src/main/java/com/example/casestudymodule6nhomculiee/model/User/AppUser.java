@@ -24,7 +24,7 @@ public class AppUser {
     private String password;
     private String email;
     private String avatar;
-    private boolean status;
+    private Boolean status;
     @ManyToOne
     private AppRole roll;
 
