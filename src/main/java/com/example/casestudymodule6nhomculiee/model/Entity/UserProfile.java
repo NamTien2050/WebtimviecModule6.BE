@@ -20,11 +20,15 @@ public class UserProfile {
     private String name;
     private int age;
     private String gender;
-    private int experience;
+    private String desiredSalary;
     private String description;
     private String phone;
     private String image;
-    private boolean status;
+    private String image1;
+    private String address;
+    private String level;
+    private String field;
+    private String motto; //trâm ngôn sống
 
     @OneToOne
     @JoinColumn(name ="user_id")

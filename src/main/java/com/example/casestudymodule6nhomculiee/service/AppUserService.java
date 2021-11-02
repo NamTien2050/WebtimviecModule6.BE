@@ -44,7 +44,7 @@ public class AppUserService {
         List<AppUser> listUser = findAll();
         for (AppUser userExist : listUser) {
             if (StringUtils.equals(user.getUsername(), userExist.getUsername())
-                    && StringUtils.equals(user.getPassword(), userExist.getPassword())) {
+                    && StringUtils.equals(user.getPassword(), userExist.getPassword())&& userExist.getStatus()) {
                 return true;
             }
         }
