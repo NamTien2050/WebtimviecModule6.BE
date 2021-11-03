@@ -117,7 +117,7 @@ public class RestLoginController {
         if (verifiAccount.getToken().equals(token)) {
             AppUser appUser1 = userService.loadUserByUsername(appUser.getUsername());
             appUser1.setStatus(true);
-            userService.add(appUser1);
+            userService.addUser(appUser1);
             return new ResponseEntity<>("Bấm vào link để đăng nhập https://localhost:8080/rest/login", HttpStatus.OK);
         }
         return new ResponseEntity<>( HttpStatus.OK);

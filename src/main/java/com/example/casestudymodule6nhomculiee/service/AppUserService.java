@@ -31,6 +31,10 @@ public class AppUserService {
         appUserRepository.save(user);
         return true;
     }
+    public void addUser(AppUser user){
+        appUserRepository.save(user);
+    }
+
 
     public void delete(Long id) {
         appUserRepository.deleteById(id);
@@ -57,5 +61,8 @@ public class AppUserService {
 
     public Boolean existsByEmail(String email) {
         return appUserRepository.existsByEmail(email);
+    }
+    public List<AppUser> showAll(){
+        return appUserRepository.findAll();
     }
 }
