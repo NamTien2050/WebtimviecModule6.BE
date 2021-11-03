@@ -91,12 +91,12 @@ public class RestLoginController {
         System.out.println(role.getName());
         appUser.setRoll(role);
         appUser.setStatus(false);
-
         userService.add(appUser);
-       // AppUser appUser1 = userService.loadUserByUsername(appUser.getUsername());
+
+        AppUser appUser1 = userService.loadUserByUsername(appUser.getUsername());
         String token = jwtService.generateTokenLogin(appUser.getUsername());
         VerifiAccount verifiAccount = new VerifiAccount();
-        verifiAccount.setIdAcc(appUser.getId());
+        verifiAccount.setIdAcc(appUser1.getId());
         verifiAccount.setToken(token);
         VerifiAccount newVerifi = verifiAccService.add(verifiAccount);
 
@@ -115,8 +115,9 @@ public class RestLoginController {
         VerifiAccount verifiAccount = verifiAccService.findById(id).get();
         AppUser appUser = userService.findById(idAcc);
         if (verifiAccount.getToken().equals(token)) {
-            appUser.setStatus(true);
-            appUserService.add(appUser);
+            AppUser appUser1 = userService.loadUserByUsername(appUser.getUsername());
+            appUser1.setStatus(true);
+            userService.add(appUser1);
             return new ResponseEntity<>("Bấm vào link để đăng nhập https://localhost:8080/rest/login", HttpStatus.OK);
         }
         return new ResponseEntity<>( HttpStatus.OK);
@@ -149,6 +150,17 @@ public class RestLoginController {
         AppUser appUser = userService.findById(id);
         return new ResponseEntity<>(appUser,HttpStatus.OK);
 
+    }
+    @GetMapping("/Employment/{id}")
+    public ResponseEntity<?> getEmploymentById(@PathVariable Long id){
+        EmployerDetail employerDetail = employmentService.findEmploymentById(id);
+        return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/EmploymentByUser/{id}")
+    public ResponseEntity<?> getEmploymentByUser(@PathVariable Long id){
+        AppUser appUser = userService.findById(id);
+        EmployerDetail employerDetail = employmentService.getEmplementByUser(appUser);
+        return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
     }
 
 

@@ -17,6 +17,7 @@ public class EmployerDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
     private String image;
     private String image1;
     private String description;
