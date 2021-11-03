@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.controller;
 
+import com.example.casestudymodule6nhomculiee.dto.ChangeStatus;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.service.IRecruitmentPostService;
@@ -81,15 +82,15 @@ public class RestEmployerController {
     }
 
     @PutMapping("/updateStatus/{id}")
-    public ResponseEntity<?> updateRecruitmentPostStatus (@PathVariable Long id){
+    public ResponseEntity<?> updateRecruitmentPostStatus (@PathVariable Long id , @RequestBody ChangeStatus changeStatus){
         Optional<RecruitmentPost> recruitmentPost1 = recruitmentPostService.findById(id);
-        if (recruitmentPost1.get().isStatus()==true){
-            recruitmentPost1.get().setStatus(false);
-            recruitmentPostService.save(recruitmentPost1.get());
+        if (changeStatus.isStatus()){
+            recruitmentPost1.get().setStatus(true);
         }
         else { recruitmentPost1.get().setStatus(true);
-            recruitmentPostService.save(recruitmentPost1.get());
+           recruitmentPost1.get().setStatus(false);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        recruitmentPostService.save(recruitmentPost1.get());
+        return new ResponseEntity<>(recruitmentPost1.get().isStatus(),HttpStatus.OK);
     }
 }
