@@ -1,32 +1,37 @@
 package com.example.casestudymodule6nhomculiee.service;
 
-import com.example.casestudymodule6nhomculiee.model.Entity.RecuitmentPost;
-import com.example.casestudymodule6nhomculiee.repository.IRecuitmentPostRepo;
+import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
+import com.example.casestudymodule6nhomculiee.repository.IRecruitmentPostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
-public class RecuitmentPostService implements IRecuitmentPostService{
+public class RecruitmentPostService implements IRecruitmentPostService{
     @Autowired
-    IRecuitmentPostRepo recuitmentPostRepo;
+    IRecruitmentPostRepo recruitmentPostRepo;
     @Override
-    public Iterable<RecuitmentPost> findAll() {
-        return recuitmentPostRepo.findAll();
+    public Iterable<RecruitmentPost> findAll() {
+        return recruitmentPostRepo.findAll();
     }
 
     @Override
-    public Optional<RecuitmentPost> findById(Long id) {
-        return recuitmentPostRepo.findById(id);
+    public Optional<RecruitmentPost> findById(Long id) {
+        return recruitmentPostRepo.findById(id);
     }
 
     @Override
-    public void save(RecuitmentPost recuitmentPost) {
-        recuitmentPostRepo.save(recuitmentPost);
+    public void save(RecruitmentPost recruitmentPost) {
+        recruitmentPostRepo.save(recruitmentPost);
     }
 
     @Override
     public void remove(Long id) {
-        recuitmentPostRepo.deleteById(id);
+        recruitmentPostRepo.deleteById(id);
     }
+
+
+    //Đóng mở khóa bài đăng
+
 }
+

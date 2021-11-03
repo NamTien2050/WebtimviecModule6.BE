@@ -1,6 +1,6 @@
 package com.example.casestudymodule6nhomculiee.service;
 
-import com.example.casestudymodule6nhomculiee.model.Entity.RecuitmentPost;
+import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 
-public interface IRecuitmentPostService extends IGeneralService<RecuitmentPost>{
+public interface IRecruitmentPostService extends IGeneralService<RecruitmentPost>{
 }

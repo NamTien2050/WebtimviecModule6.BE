@@ -36,8 +36,8 @@ public class EmployerDetail {
     @JoinColumn(name ="user_id")
     private AppUser appUser;
 
-    @OneToMany(targetEntity = RecuitmentPost.class,cascade = CascadeType.ALL)
-    private List<RecuitmentPost> recuitmentPostList;
+    @OneToMany(targetEntity = RecruitmentPost.class,cascade = CascadeType.ALL)
+    private List<RecruitmentPost> recuitmentPostList;
 
 
 

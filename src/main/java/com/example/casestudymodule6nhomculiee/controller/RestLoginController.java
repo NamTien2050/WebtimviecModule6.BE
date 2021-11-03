@@ -1,5 +1,5 @@
 package com.example.casestudymodule6nhomculiee.controller;
-import com.example.casestudymodule6nhomculiee.dto.ResponMessage;
+import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.UserProfile;
 import com.example.casestudymodule6nhomculiee.model.User.AppRole;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/rest")
@@ -82,10 +80,10 @@ public class RestLoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> Register(@RequestBody AppUser appUser){
         if(userService.existsByUsername(appUser.getUsername())){
-            return new ResponseEntity<>(new ResponMessage("no_user"), HttpStatus.OK);
+            return new ResponseEntity<>(new RespondMessage("no_user"), HttpStatus.OK);
         }
         if(userService.existsByEmail(appUser.getEmail())){
-            return new ResponseEntity<>(new ResponMessage("no_email"), HttpStatus.OK);
+            return new ResponseEntity<>(new RespondMessage("no_email"), HttpStatus.OK);
         }
         AppRole role = roleService.findById(3L).get();
         System.out.println(role.getName());
@@ -106,7 +104,7 @@ public class RestLoginController {
         sendmail.setText("http://localhost:8080/rest/verification/" + newVerifi.getId() + "/" + appUser.getId() + "?token=" + token);
 
         javaMailSender.send(sendmail);
-        return new ResponseEntity<>(new ResponMessage("yes"),HttpStatus.OK);
+        return new ResponseEntity<>(new RespondMessage("yes"),HttpStatus.OK);
 
 
     }
