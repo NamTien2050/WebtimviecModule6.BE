@@ -19,12 +19,12 @@ public class JobApply {
     private boolean status;
 
     @OneToOne
-    @JoinColumn(name ="userProfile_id")
-    private UserProfile userProfile;
+    @JoinColumn(name ="user_id")
+    private AppUser appUser;
 
     @OneToOne
     @JoinColumn(name="requimentPost_id")
-    private RecuitmentPost recuitmentPost;
+    private RecruitmentPost recuitmentPost;
 
 
 

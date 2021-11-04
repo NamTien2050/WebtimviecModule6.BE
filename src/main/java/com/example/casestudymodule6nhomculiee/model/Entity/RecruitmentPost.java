@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.model.Entity;
 
+import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
@@ -12,18 +13,18 @@ import java.time.LocalDate;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class RecuitmentPost {
+public class RecruitmentPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String title;
     private double minSalary;
     private double maxSalary;
     private int quantity;
     private String gender;
     private String skill; // JAVA,PHP
     private String workType;
-    private String requirement;
+    private String position;
     private String experience;
     private String description;
     private LocalDate Date;
@@ -32,8 +33,8 @@ public class RecuitmentPost {
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "employment_id")
-    private EmployerDetail employerDetail;
+    @JoinColumn(name = "user_id")
+    private AppUser appUser;
 
 
 

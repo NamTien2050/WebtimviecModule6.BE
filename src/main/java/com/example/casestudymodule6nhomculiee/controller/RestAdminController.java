@@ -25,6 +25,11 @@ public class RestAdminController {
         List<EmployerDetail> list = employmentService.listEmploymentUnauthenticated(false);
         return new ResponseEntity<>(list, HttpStatus.ACCEPTED)  ;
     }
+    @GetMapping("/listEmploymentAuthenticated")
+    public ResponseEntity<?> showListEmploymentAuthenticated(){
+        List<EmployerDetail> list = employmentService.listEmploymentUnauthenticated(true);
+        return new ResponseEntity<>(list, HttpStatus.ACCEPTED)  ;
+    }
     @GetMapping("/deleteElementById/{id}")
     public ResponseEntity<?> deleteEmploymentById(@PathVariable Long id){
         employmentService.deleteEmploymentById(id);
@@ -34,6 +39,13 @@ public class RestAdminController {
     public ResponseEntity<?> acceptEmployment(@PathVariable Long id){
         EmployerDetail employerDetail = employmentService.findEmploymentById(id);
         employerDetail.setStatus(true);
+        employmentService.createEmployment(employerDetail);
+        return new ResponseEntity<>( HttpStatus.ACCEPTED)  ;
+    }
+    @GetMapping("/lockEmployment/{id}")
+    public ResponseEntity<?> lockEmployment(@PathVariable Long id){
+        EmployerDetail employerDetail = employmentService.findEmploymentById(id);
+        employerDetail.setStatus(false);
         employmentService.createEmployment(employerDetail);
         return new ResponseEntity<>( HttpStatus.ACCEPTED)  ;
     }
