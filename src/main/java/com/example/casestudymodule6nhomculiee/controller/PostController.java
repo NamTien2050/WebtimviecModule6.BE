@@ -47,7 +47,5 @@ public class PostController {
             return new ResponseEntity<>(fields, HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(fields, HttpStatus.OK);
     }
-//@PostMapping
-//    public ResponseEntity<Iterable<RecruitmentPost>> createPost(){
-//}
+
 }
