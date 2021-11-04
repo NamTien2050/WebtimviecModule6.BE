@@ -12,6 +12,6 @@ public interface IRecruitmentPostRepo extends JpaRepository<RecruitmentPost, Lon
     Iterable<RecruitmentPost> SearchHomePage(@Param("location") String location,
                                              @Param("field") String field);
 
-    Iterable<RecruitmentPost>findAllByLocationContaining(String location);
+    Iterable<RecruitmentPost> findAllByLocationContaining(String location);
     Iterable<RecruitmentPost>findAllByFieldContaining(String field);
 }

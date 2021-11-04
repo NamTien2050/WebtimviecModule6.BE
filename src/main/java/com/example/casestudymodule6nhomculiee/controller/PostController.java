@@ -33,15 +33,13 @@ public class PostController {
     }
 
     @GetMapping("/location")
-    public ResponseEntity<Iterable<RecruitmentPost>> findAllByLocationContaining(String location) {
-        List<RecruitmentPost> locations = (List<RecruitmentPost>) iRecruitmentPostService.findAllByLocationContaining(location);
-        if (locations.isEmpty())
-            return new ResponseEntity<>(locations, HttpStatus.NO_CONTENT);
+    public ResponseEntity<Iterable<RecruitmentPost>> findAllByLocationContaining(@RequestParam String location) {
+        Iterable<RecruitmentPost> locations = iRecruitmentPostService.findAllByLocationContaining(location);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
     @GetMapping("/fields")
-    public ResponseEntity<Iterable<RecruitmentPost>> findAllByFieldContaining(String field){
+    public ResponseEntity<Iterable<RecruitmentPost>> findAllByFieldContaining(@RequestParam String field){
         List<RecruitmentPost> fields= (List<RecruitmentPost>) iRecruitmentPostService.findAllByFieldContaining(field);
         if(fields.isEmpty())
             return new ResponseEntity<>(fields, HttpStatus.NO_CONTENT);
