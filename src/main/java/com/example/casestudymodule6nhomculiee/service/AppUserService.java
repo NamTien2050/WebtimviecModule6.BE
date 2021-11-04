@@ -4,9 +4,11 @@ import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.example.casestudymodule6nhomculiee.repository.IAppUserRepo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppUserService {
@@ -58,4 +60,6 @@ public class AppUserService {
     public Boolean existsByEmail(String email) {
         return appUserRepository.existsByEmail(email);
     }
+
+
 }

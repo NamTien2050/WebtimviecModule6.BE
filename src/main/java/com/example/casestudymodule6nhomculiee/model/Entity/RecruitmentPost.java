@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.model.Entity;
 
+import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
@@ -31,17 +32,12 @@ public class RecruitmentPost {
     private String location; //List
     private boolean status;
 
+    //        @ManyToOne
+//    @JoinColumn(name = "employment_id")
+//    private EmployerDetail employerDetail;
     @ManyToOne
-    @JoinColumn(name = "employment_id")
-    private EmployerDetail employerDetail;
-
-
-
-
-
-
-
-
+    @JoinColumn(name = "user_id")
+    private AppUser appUser;
 
 
 }

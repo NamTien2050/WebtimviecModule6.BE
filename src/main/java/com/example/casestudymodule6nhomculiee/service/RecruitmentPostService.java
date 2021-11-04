@@ -30,6 +30,16 @@ public class RecruitmentPostService implements IRecruitmentPostService{
         recruitmentPostRepo.deleteById(id);
     }
 
+    @Override
+    public Iterable<RecruitmentPost> findRecruitmentPostByAppUser_Id(Long id) {
+        return recruitmentPostRepo.findRecruitmentPostByAppUser_Id(id);
+    }
+
+//    public Iterable<RecruitmentPost> showListById(Long id){
+//        return recruitmentPostRepo.findRecruitmentPostByEmployerDetail_Id(id);
+//    }
+
+
 
     //Đóng mở khóa bài đăng
 

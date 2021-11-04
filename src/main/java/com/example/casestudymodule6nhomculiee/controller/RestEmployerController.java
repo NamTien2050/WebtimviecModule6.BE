@@ -2,6 +2,7 @@ package com.example.casestudymodule6nhomculiee.controller;
 
 import com.example.casestudymodule6nhomculiee.dto.ChangeStatus;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
+import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.service.IRecruitmentPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class RestEmployerController {
 @Autowired
     IRecruitmentPostService recruitmentPostService;
+
 //    @GetMapping
 //    public ResponseEntity<?> pageCategory(@PageableDefault(sort = "nameCategory", direction = Sort.Direction.ASC) Pageable pageable){
 //        Page<Category> categoryPage = categoryService.findAll(pageable);
@@ -26,9 +28,10 @@ public class RestEmployerController {
 //        return new ResponseEntity<>(categoryPage, HttpStatus.OK);
 //    }
 
-    @GetMapping()
-    public ResponseEntity<Iterable<?>> RecruitmentPostList(){
-        Iterable<RecruitmentPost> recruitmentPostList= recruitmentPostService.findAll();
+    @GetMapping("/list/{id}")
+    public ResponseEntity<?> RecruitmentPostList(@PathVariable Long id){
+
+        Iterable<RecruitmentPost> recruitmentPostList= recruitmentPostService.findRecruitmentPostByAppUser_Id(id);
         return new ResponseEntity<>(recruitmentPostList,HttpStatus.OK);
     }
 
@@ -87,10 +90,11 @@ public class RestEmployerController {
         if (changeStatus.isStatus()){
             recruitmentPost1.get().setStatus(true);
         }
-        else { recruitmentPost1.get().setStatus(true);
+        else {
            recruitmentPost1.get().setStatus(false);
         }
         recruitmentPostService.save(recruitmentPost1.get());
         return new ResponseEntity<>(recruitmentPost1.get().isStatus(),HttpStatus.OK);
     }
 }
+//recruitmentPost1.get().setStatus(true);
