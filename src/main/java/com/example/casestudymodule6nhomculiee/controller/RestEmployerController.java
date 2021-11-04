@@ -4,6 +4,8 @@ import com.example.casestudymodule6nhomculiee.dto.ChangeStatus;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
+import com.example.casestudymodule6nhomculiee.model.User.AppUser;
+import com.example.casestudymodule6nhomculiee.service.AppUserService;
 import com.example.casestudymodule6nhomculiee.service.IRecruitmentPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,8 @@ import java.util.Optional;
 public class RestEmployerController {
 @Autowired
     IRecruitmentPostService recruitmentPostService;
-
+@Autowired
+    AppUserService appUserService;
 //    @GetMapping
 //    public ResponseEntity<?> pageCategory(@PageableDefault(sort = "nameCategory", direction = Sort.Direction.ASC) Pageable pageable){
 //        Page<Category> categoryPage = categoryService.findAll(pageable);
@@ -35,9 +38,9 @@ public class RestEmployerController {
         return new ResponseEntity<>(recruitmentPostList,HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createRecruitmentPost(@RequestBody RecruitmentPost recruitmentPost){
 
+    @PostMapping
+    public ResponseEntity<?> createRecruitmentPost( @RequestBody RecruitmentPost recruitmentPost){
         recruitmentPostService.save(recruitmentPost);
         return new ResponseEntity<>(new RespondMessage("create_success"), HttpStatus.OK);
     }
