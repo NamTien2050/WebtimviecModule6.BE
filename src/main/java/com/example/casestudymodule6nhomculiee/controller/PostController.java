@@ -16,12 +16,12 @@ public class PostController {
     @Autowired
     private IRecruitmentPostService iRecruitmentPostService;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<Iterable<RecruitmentPost>> findAll() {
         List<RecruitmentPost> posts = (List<RecruitmentPost>) iRecruitmentPostService.findAll();
-//        if (posts.isEmpty())
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+        if (posts.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(iRecruitmentPostService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/searchHomePage")
@@ -48,5 +48,6 @@ public class PostController {
         return new ResponseEntity<>(fields, HttpStatus.OK);
     }
 //@PostMapping
-//    public ResponseEntity<Iterable<RecruitmentPost>>
+//    public ResponseEntity<Iterable<RecruitmentPost>> createPost(){
+//}
 }
