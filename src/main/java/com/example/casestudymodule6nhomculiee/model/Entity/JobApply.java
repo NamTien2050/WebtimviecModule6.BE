@@ -8,9 +8,9 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class JobApply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

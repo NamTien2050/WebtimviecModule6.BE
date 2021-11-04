@@ -9,9 +9,9 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class RecruitmentPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

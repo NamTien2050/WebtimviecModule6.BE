@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
-public class RecruitmentPostService implements IRecruitmentPostService{
+public class RecruitmentPostService implements IRecruitmentPostService {
     @Autowired
     IRecruitmentPostRepo recruitmentPostRepo;
+
     @Override
     public Iterable<RecruitmentPost> findAll() {
         return recruitmentPostRepo.findAll();
@@ -30,7 +32,20 @@ public class RecruitmentPostService implements IRecruitmentPostService{
         recruitmentPostRepo.deleteById(id);
     }
 
+    @Override
+    public Iterable<RecruitmentPost> SearchHomePage(String location, String field) {
+        return recruitmentPostRepo.SearchHomePage(location, field);
+    }
 
+    @Override
+    public Iterable<RecruitmentPost> findAllByLocationContaining(String location) {
+        return recruitmentPostRepo.findAllByLocationContaining(location);
+    }
+
+    @Override
+    public Iterable<RecruitmentPost> findAllByFieldContaining(String field) {
+        return recruitmentPostRepo.findAllByFieldContaining(field);
+    }
     //Đóng mở khóa bài đăng
 
 }
