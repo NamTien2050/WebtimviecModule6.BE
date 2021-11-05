@@ -27,17 +27,22 @@ public class RecruitmentPost {
     private String position;
     private String experience;
     private String description;
-    private LocalDate date;
+    private LocalDate Date;
     private String field; //Lĩnh vực : tài chính, IT;
     private String location; //List
     private boolean status;
 
-    //        @ManyToOne
-//    @JoinColumn(name = "employment_id")
-//    private EmployerDetail employerDetail;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser appUser;
+
+
+
+
+
+
+
+
 
 
 }

@@ -12,7 +12,7 @@ public class RecruitmentPostService implements IRecruitmentPostService{
     IRecruitmentPostRepo recruitmentPostRepo;
     @Override
     public Iterable<RecruitmentPost> findAll() {
-        return recruitmentPostRepo.findAll();
+        return recruitmentPostRepo.findAllByStatus(true);
     }
 
     @Override
@@ -35,13 +35,4 @@ public class RecruitmentPostService implements IRecruitmentPostService{
         return recruitmentPostRepo.findRecruitmentPostByAppUser_Id(id);
     }
 
-//    public Iterable<RecruitmentPost> showListById(Long id){
-//        return recruitmentPostRepo.findRecruitmentPostByEmployerDetail_Id(id);
-//    }
-
-
-
-    //Đóng mở khóa bài đăng
-
 }
-
