@@ -38,10 +38,10 @@ public class PostController {
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
-    @GetMapping("/fields")
-    public ResponseEntity<Iterable<RecruitmentPost>> findAllByFieldContaining(@RequestParam String field){
-        List<RecruitmentPost> fields= (List<RecruitmentPost>) iRecruitmentPostService.findAllByFieldContaining(field);
-        if(fields.isEmpty())
+    @GetMapping("/fields/{field}")
+    public ResponseEntity<Iterable<RecruitmentPost>> findAllByFieldContaining(@PathVariable String field) {
+        List<RecruitmentPost> fields = (List<RecruitmentPost>) iRecruitmentPostService.findAllByFieldContaining(field);
+        if (fields.isEmpty())
             return new ResponseEntity<>(fields, HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(fields, HttpStatus.OK);
     }
