@@ -174,6 +174,12 @@ public class RestLoginController {
         Iterable<RecruitmentPost> recruitmentPostList= recruitmentPostService.findAll();
         return new ResponseEntity<>(recruitmentPostList,HttpStatus.ACCEPTED);
     }
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<?> getUserProfileById(@PathVariable Long id){
+        UserProfile userProfile = userProfileService.findById(id);
+        return new ResponseEntity<>(userProfile,HttpStatus.ACCEPTED);
+    }
+
 
 
 

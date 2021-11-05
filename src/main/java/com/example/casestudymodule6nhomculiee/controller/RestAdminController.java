@@ -1,6 +1,8 @@
 package com.example.casestudymodule6nhomculiee.controller;
 
+import com.example.casestudymodule6nhomculiee.dto.ChangeStatus;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
+import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.example.casestudymodule6nhomculiee.service.AppUserService;
 import com.example.casestudymodule6nhomculiee.service.EmploymentService;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin")
@@ -61,6 +64,23 @@ public class RestAdminController {
         appUser.setStatus(false);
         appUserService.addUser(appUser);
         return new ResponseEntity<>(HttpStatus.ACCEPTED) ;
+    }
+    @PutMapping("/updateStatus/{id}")
+    public ResponseEntity<?> updateRecruitmentUserStatus (@PathVariable Long id , @RequestBody ChangeStatus changeStatus){
+        AppUser appUser = appUserService.findById(id);
+        if (changeStatus.isStatus()){
+            appUser.setStatus(true);
+        }
+        else {
+            appUser.setStatus(false);
+        }
+        appUserService.addUser(appUser);
+        return new ResponseEntity<>(appUser.getStatus(),HttpStatus.OK);
+    }
+    @GetMapping("/deleteById/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        appUserService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

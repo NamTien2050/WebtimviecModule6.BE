@@ -111,20 +111,16 @@ public class RestEmploymentController {
     }
     @GetMapping("/UserProfileofEmployment/{id}")
     public ResponseEntity<?> UserProfileOfEmployment(@PathVariable Long id){
-        List<RecruitmentPost> recruitmentPostList= (List<RecruitmentPost>) recruitmentPostService.findRecruitmentPostByAppUser_Id(id);
+        RecruitmentPost recruitmentPost = recruitmentPostService.findById(id).get();
+        List<JobApply> jobApplyList = jobApplyService.jobApplyListByPost(recruitmentPost,false);
         List<AppUser> appUsers = new ArrayList<>();
-        List<JobApply> jobApplyList = new ArrayList<>();
         List<UserProfile> userProfiles = new ArrayList<>();
-        for (int i =0; i< recruitmentPostList.size();i++){
-            List<JobApply> jobApply = jobApplyService.jobApplyListByPost(recruitmentPostList.get(i),false);
-        //    jobApplyList.add(jobApply);
-        }
-        for (int i =0; i< jobApplyList.size();i++){
+        for (int i =0; i<jobApplyList.size();i++){
             appUsers.add(jobApplyList.get(i).getAppUser());
         }
         for (int i=0;i<appUsers.size();i++){
-            UserProfile userProfile = userProfileService.getUserProfileByAppUser(appUsers.get(i));
-            userProfiles.add(userProfile);
+           UserProfile userProfile = userProfileService.getUserProfileByAppUser(appUsers.get(i));
+           userProfiles.add(userProfile);
         }
 
         return new ResponseEntity<>(userProfiles, HttpStatus.OK);

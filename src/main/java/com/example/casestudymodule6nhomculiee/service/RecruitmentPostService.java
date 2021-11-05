@@ -12,7 +12,7 @@ public class RecruitmentPostService implements IRecruitmentPostService{
     IRecruitmentPostRepo recruitmentPostRepo;
     @Override
     public Iterable<RecruitmentPost> findAll() {
-        return recruitmentPostRepo.findAll();
+        return recruitmentPostRepo.findAllByStatus(true);
     }
 
     @Override
