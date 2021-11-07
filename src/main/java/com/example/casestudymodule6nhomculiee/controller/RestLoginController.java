@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest")
@@ -83,15 +84,15 @@ public class RestLoginController {
 
 
     }
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> Register(@RequestBody AppUser appUser){
+    @RequestMapping(value = "/register/{id}", method = RequestMethod.POST)
+    public ResponseEntity<?> Register(@RequestBody AppUser appUser,@PathVariable Long id){
         if(userService.existsByUsername(appUser.getUsername())){
             return new ResponseEntity<>(new ResponMessage("no_user"), HttpStatus.OK);
         }
         if(userService.existsByEmail(appUser.getEmail())){
             return new ResponseEntity<>(new ResponMessage("no_email"), HttpStatus.OK);
         }
-        AppRole role = roleService.findById(3L).get();
+        AppRole role = roleService.findById(id).get();
         System.out.println(role.getName());
         appUser.setRoll(role);
         appUser.setStatus(false);
@@ -179,6 +180,15 @@ public class RestLoginController {
         UserProfile userProfile = userProfileService.findById(id);
         return new ResponseEntity<>(userProfile,HttpStatus.ACCEPTED);
     }
+    @GetMapping("/list/{id}")
+    public ResponseEntity<?> detailRecruitmentPost(@PathVariable Long id){
+        Optional<RecruitmentPost> recruitmentPost = recruitmentPostService.findById(id);
+        if(!recruitmentPost.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(recruitmentPost.get(), HttpStatus.OK);
+    }
+
 
 
 
