@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest")
@@ -177,4 +180,20 @@ public class RestLoginController {
         UserProfile userProfile = userProfileService.findById(id);
         return new ResponseEntity<>(userProfile,HttpStatus.ACCEPTED);
     }
+    @GetMapping("/list/{id}")
+    public ResponseEntity<?> detailRecruitmentPost(@PathVariable Long id){
+        Optional<RecruitmentPost> recruitmentPost = recruitmentPostService.findById(id);
+        if(!recruitmentPost.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(recruitmentPost.get(), HttpStatus.OK);
+    }
+
+
+
+
+
+
+
+
 }

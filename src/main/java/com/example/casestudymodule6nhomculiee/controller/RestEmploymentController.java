@@ -116,6 +116,7 @@ public class RestEmploymentController {
         List<AppUser> appUsers = new ArrayList<>();
         List<UserProfile> userProfiles = new ArrayList<>();
         for (int i =0; i<jobApplyList.size();i++){
+            if(jobApplyList.get(i).getAppUser()!=null)
             appUsers.add(jobApplyList.get(i).getAppUser());
         }
         for (int i=0;i<appUsers.size();i++){
