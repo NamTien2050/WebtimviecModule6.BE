@@ -12,7 +12,6 @@ import java.util.List;
 @Repository
 public interface IRecruitmentPostRepo  extends JpaRepository<RecruitmentPost, Long> {
     Iterable<RecruitmentPost> findRecruitmentPostByAppUser_Id(Long id);
-
     @Query("select a from RecruitmentPost a where a.status = ?1")
     List<RecruitmentPost> findAllByStatus(Boolean status);
 

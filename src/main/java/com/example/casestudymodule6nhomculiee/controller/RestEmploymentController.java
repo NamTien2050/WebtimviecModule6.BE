@@ -1,7 +1,7 @@
 package com.example.casestudymodule6nhomculiee.controller;
 
 import com.example.casestudymodule6nhomculiee.dto.ChangeStatus;
-import com.example.casestudymodule6nhomculiee.dto.ResponMessage;
+import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
 import com.example.casestudymodule6nhomculiee.model.Entity.JobApply;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.model.Entity.UserProfile;
@@ -52,7 +52,7 @@ public class RestEmploymentController {
     @PostMapping
     public ResponseEntity<?> createRecruitmentPost( @RequestBody RecruitmentPost recruitmentPost){
         recruitmentPostService.save(recruitmentPost);
-        return new ResponseEntity<>(new ResponMessage("create_success"), HttpStatus.OK);
+        return new ResponseEntity<>(new RespondMessage("create_success"), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRecruitmentPost(@PathVariable Long id){
@@ -61,7 +61,7 @@ public class RestEmploymentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         recruitmentPostService.remove(id);
-        return new ResponseEntity<>(new ResponMessage("delete_success"), HttpStatus.OK);
+        return new ResponseEntity<>(new RespondMessage("delete_success"), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -85,7 +85,7 @@ public class RestEmploymentController {
         recruitmentPost1.get().setField(recruitmentPost.getField());
         recruitmentPost1.get().setLocation(recruitmentPost.getLocation());
         recruitmentPostService.save(recruitmentPost1.get());
-        return new ResponseEntity<>(new ResponMessage("update_success"), HttpStatus.OK);
+        return new ResponseEntity<>(new RespondMessage("update_success"), HttpStatus.OK);
 
     }
     @GetMapping("/{id}")

@@ -27,6 +27,7 @@ public class RecruitmentPost {
     private String position;
     private String experience;
     private String description;
+    private String expectation;
     private LocalDate Date;
     private String field; //Lĩnh vực : tài chính, IT;
     private String location; //List

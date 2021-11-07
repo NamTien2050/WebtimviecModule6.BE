@@ -177,11 +177,4 @@ public class RestLoginController {
         UserProfile userProfile = userProfileService.findById(id);
         return new ResponseEntity<>(userProfile,HttpStatus.ACCEPTED);
     }
-
-
-
-
-
-
-
 }
