@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.model.Entity;
 
+import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
@@ -9,9 +10,9 @@ import java.time.LocalDate;
 
 @Data
 @Entity
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class RecruitmentPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +27,14 @@ public class RecruitmentPost {
     private String position;
     private String experience;
     private String description;
-    private LocalDate date;
+    private LocalDate Date;
     private String field; //Lĩnh vực : tài chính, IT;
     private String location; //List
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "employment_id")
-    private EmployerDetail employerDetail;
+    @JoinColumn(name = "user_id")
+    private AppUser appUser;
 
 
 

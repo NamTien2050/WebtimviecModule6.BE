@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.model.Entity;
 
+import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
@@ -18,8 +19,8 @@ public class JobApply {
     private boolean status;
 
     @OneToOne
-    @JoinColumn(name ="userProfile_id")
-    private UserProfile userProfile;
+    @JoinColumn(name ="user_id")
+    private AppUser appUser;
 
     @OneToOne
     @JoinColumn(name="requimentPost_id")

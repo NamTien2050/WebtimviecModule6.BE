@@ -1,6 +1,7 @@
 package com.example.casestudymodule6nhomculiee.controller;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
+import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.model.Entity.UserProfile;
 import com.example.casestudymodule6nhomculiee.model.User.AppRole;
 import com.example.casestudymodule6nhomculiee.model.User.AppUser;
@@ -44,6 +45,9 @@ public class RestLoginController {
     EmploymentService employmentService;
     @Autowired
     UserProfileService userProfileService;
+
+    @Autowired
+    IRecruitmentPostService recruitmentPostService;
 
 
 
@@ -89,12 +93,12 @@ public class RestLoginController {
         System.out.println(role.getName());
         appUser.setRoll(role);
         appUser.setStatus(false);
-
         userService.add(appUser);
-       // AppUser appUser1 = userService.loadUserByUsername(appUser.getUsername());
+
+        AppUser appUser1 = userService.loadUserByUsername(appUser.getUsername());
         String token = jwtService.generateTokenLogin(appUser.getUsername());
         VerifiAccount verifiAccount = new VerifiAccount();
-        verifiAccount.setIdAcc(appUser.getId());
+        verifiAccount.setIdAcc(appUser1.getId());
         verifiAccount.setToken(token);
         VerifiAccount newVerifi = verifiAccService.add(verifiAccount);
 
@@ -114,7 +118,7 @@ public class RestLoginController {
         AppUser appUser = userService.findById(idAcc);
         if (verifiAccount.getToken().equals(token)) {
             appUser.setStatus(true);
-            appUserService.add(appUser);
+            userService.addUser(appUser);
             return new ResponseEntity<>("Bấm vào link để đăng nhập https://localhost:8080/rest/login", HttpStatus.OK);
         }
         return new ResponseEntity<>( HttpStatus.OK);
@@ -133,6 +137,10 @@ public class RestLoginController {
         AppUser appUser = userService.findById(id);
         userProfile.setAppUser(appUser);
         userProfileService.createUserProfile(userProfile);
+        SimpleMailMessage sendmail = new SimpleMailMessage();
+        sendmail.setTo(appUser.getEmail());
+        sendmail.setSubject("Bạn đã đăng kí tài khoản thành công, vui lòng chờ hệ thống xác nhận!");
+        javaMailSender.send(sendmail);
         return new ResponseEntity<>( HttpStatus.OK);
     }
     @GetMapping("/UserProfileByUser/{id}")
@@ -148,6 +156,28 @@ public class RestLoginController {
         return new ResponseEntity<>(appUser,HttpStatus.OK);
 
     }
+    @GetMapping("/Employment/{id}")
+    public ResponseEntity<?> getEmploymentById(@PathVariable Long id){
+        EmployerDetail employerDetail = employmentService.findEmploymentById(id);
+        return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/EmploymentByUser/{id}")
+    public ResponseEntity<?> getEmploymentByUser(@PathVariable Long id){
+        AppUser appUser = userService.findById(id);
+        EmployerDetail employerDetail = employmentService.getEmplementByUser(appUser);
+        return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/AllListPost")
+    public ResponseEntity<?> showAllListPost(){
+        Iterable<RecruitmentPost> recruitmentPostList= recruitmentPostService.findAll();
+        return new ResponseEntity<>(recruitmentPostList,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<?> getUserProfileById(@PathVariable Long id){
+        UserProfile userProfile = userProfileService.findById(id);
+        return new ResponseEntity<>(userProfile,HttpStatus.ACCEPTED);
+    }
+
 
 
 

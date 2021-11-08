@@ -20,4 +20,7 @@ public class UserProfileService implements IUserProfileService{
     public UserProfile getUserProfileByAppUser(AppUser appUser){
        return iUserProfileRepo.getUserProfileByAppUser(appUser);
     }
+    public UserProfile findById(Long id){
+        return iUserProfileRepo.findById(id).get();
+    }
 }
