@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -125,6 +126,19 @@ public class RestEmploymentController {
         }
 
         return new ResponseEntity<>(userProfiles, HttpStatus.OK);
+    }
+    @GetMapping("/pickUserProfile/{id_user}/{id_post}")
+    public ResponseEntity<?> PickUserProfile(@PathVariable Long id_user,@PathVariable Long id_post){
+        AppUser appUser = appUserService.findById(id_user);
+        RecruitmentPost recruitmentPost = recruitmentPostService.findById(id_post).get();
+        JobApply jobApply = jobApplyService.pickUserProfile(recruitmentPost,appUser);
+        jobApply.setStatus(true);
+        jobApply.setDate(LocalDate.now());
+        jobApply.setNotify("Hồ sơ của bạn đã được chọn, vui lòng tới công ty"+"" +recruitmentPost.getNameEmployer()+" tại địa chỉ" + "" +recruitmentPost.getLocation()+"để phỏng vấn");
+        jobApplyService.save(jobApply);
+        return new ResponseEntity<>("thành công", HttpStatus.OK);
+
+
     }
 
 }

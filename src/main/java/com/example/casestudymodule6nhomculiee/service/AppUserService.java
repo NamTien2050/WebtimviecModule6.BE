@@ -1,4 +1,5 @@
 package com.example.casestudymodule6nhomculiee.service;
+import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.User.AppRole;
 import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.example.casestudymodule6nhomculiee.repository.IAppUserRepo;
@@ -65,4 +66,10 @@ public class AppUserService {
     public List<AppUser> showAll(){
         return appUserRepository.findAll();
     }
+
+    public AppUser findByEmail(String email){
+        return appUserRepository.getAppUserByEmail(email);
+
+    }
+
 }

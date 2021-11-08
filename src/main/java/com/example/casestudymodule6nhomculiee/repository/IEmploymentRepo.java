@@ -16,4 +16,8 @@ public interface IEmploymentRepo extends JpaRepository<EmployerDetail,Long> {
     @Query("select a from EmployerDetail a where a.appUser = ?1")
     EmployerDetail getEmployerDetailByByAppUser(AppUser appUser);
 
+    @Query("select a from EmployerDetail a where a.name = ?1")
+    EmployerDetail getEmployerDetailByByName(String name);
+
+
 }

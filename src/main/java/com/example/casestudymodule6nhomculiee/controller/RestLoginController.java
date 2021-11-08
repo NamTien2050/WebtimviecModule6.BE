@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.controller;
 import com.example.casestudymodule6nhomculiee.dto.ResponMessage;
+import com.example.casestudymodule6nhomculiee.dto.TopCompanys;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.model.Entity.UserProfile;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/rest")
@@ -188,6 +188,68 @@ public class RestLoginController {
         }
         return new ResponseEntity<>(recruitmentPost.get(), HttpStatus.OK);
     }
+//    @GetMapping("/list/{id}")
+//    public ResponseEntity<?> RecruitmentPostList(@PathVariable Long id){
+//
+//        Iterable<RecruitmentPost> recruitmentPostList= recruitmentPostService.findRecruitmentPostByAppUser_Id(id);
+//        return new ResponseEntity<>(recruitmentPostList, HttpStatus.OK);
+//    }
+
+    @GetMapping("/listTopCompany")
+    public ResponseEntity<?> listTopCompany(){
+        String name = null;
+        List<EmployerDetail> employerDetails = new ArrayList<>();
+        List<TopCompanys> topCompanys = new ArrayList<>();
+        List<AppUser> list = appUserService.showAll();
+        for (int i =0; i< list.size();i++){
+            int total = 0;
+            List<RecruitmentPost> postList = (List<RecruitmentPost>) recruitmentPostService.findRecruitmentPostByAppUser_Id(list.get(i).getId());
+            for (int j =0; j < postList.size();j++){
+                total += postList.get(j).getQuantity();
+                name = postList.get(j).getNameEmployer();
+            }
+            TopCompanys topCompany = new TopCompanys(name,total);
+            topCompanys.add(topCompany);
+        }
+
+        topCompanys.sort(((o1, o2) -> Integer.compare(o2.getQuantity(), o1.getQuantity())));
+
+        for (int i=0;i<topCompanys.size();i++){
+            EmployerDetail employerDetail = employmentService.getEmplementByName(topCompanys.get(i).getName());
+            employerDetails.add(employerDetail);
+            if(i>6){
+                return   new ResponseEntity<>( employerDetails, HttpStatus.OK);
+            }
+
+        }
+        return   new ResponseEntity<>( employerDetails, HttpStatus.OK);
+
+
+    }
+    @GetMapping("/findAllBySalaryHot")
+    public ResponseEntity<?> findRecruitmentBySalaryHot(){
+        List<RecruitmentPost> recruitmentPosts = recruitmentPostService.findAllBySalaryHot();
+        return new ResponseEntity<>(recruitmentPosts,HttpStatus.ACCEPTED);
+
+    }
+
+    @GetMapping("/findAllByFieldHot")
+    public ResponseEntity<?> findRecruitmentByFieldHot(){
+        List<RecruitmentPost> recruitmentPosts = recruitmentPostService.findAllByFiledHot();
+        return new ResponseEntity<>(recruitmentPosts,HttpStatus.ACCEPTED);
+
+    }
+
+    @GetMapping("/listRecruimentPost/{id}")
+    public ResponseEntity<?> findRecruitmentPostByEmploymentId(@PathVariable Long id){
+        EmployerDetail employerDetail = employmentService.findEmploymentById(id);
+        AppUser appUser = appUserService.findByEmail(employerDetail.getEmail());
+        List<RecruitmentPost> list = (List<RecruitmentPost>) recruitmentPostService.findRecruitmentPostByAppUser_Id(appUser.getId());;
+        return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+
+    }
+
+
 
 
 

@@ -37,5 +37,12 @@ public class RestUserController {
 
         return new ResponseEntity<>( HttpStatus.ACCEPTED)  ;
     }
+    @GetMapping("/notify/{id}")
+    public ResponseEntity<?> notify(@PathVariable Long id){
+        AppUser appUser = appUserService.findById(id);
+        List<JobApply> list = jobApplyService.notify(appUser);
+        return new ResponseEntity<>(list, HttpStatus.ACCEPTED)  ;
+    }
+
 
 }

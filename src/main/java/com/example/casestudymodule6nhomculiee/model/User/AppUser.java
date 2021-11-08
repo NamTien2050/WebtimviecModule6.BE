@@ -1,4 +1,5 @@
 package com.example.casestudymodule6nhomculiee.model.User;
+import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.JobApply;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -28,6 +29,7 @@ public class AppUser {
     private Boolean status;
     @ManyToOne
     private AppRole roll;
+
 
 
     public Collection<? extends GrantedAuthority> getAuthorities() {

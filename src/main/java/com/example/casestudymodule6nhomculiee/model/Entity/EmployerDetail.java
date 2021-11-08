@@ -20,6 +20,7 @@ public class EmployerDetail {
     private String name;
     private String image;
     private String image1;
+    private String logo;
     private String description;
     private String phone;
     private String googlemapLink;

@@ -5,6 +5,7 @@ import com.example.casestudymodule6nhomculiee.repository.IRecruitmentPostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class RecruitmentPostService implements IRecruitmentPostService{
@@ -33,6 +34,14 @@ public class RecruitmentPostService implements IRecruitmentPostService{
     @Override
     public Iterable<RecruitmentPost> findRecruitmentPostByAppUser_Id(Long id) {
         return recruitmentPostRepo.findRecruitmentPostByAppUser_Id(id);
+    }
+    @Override
+    public List<RecruitmentPost> findAllBySalaryHot(){
+        return recruitmentPostRepo.findAllBySalaryHot(15);
+    }
+    @Override
+    public List<RecruitmentPost> findAllByFiledHot(){
+        return recruitmentPostRepo.findAllByFieldHot("IT","Tài chính");
     }
 
 }

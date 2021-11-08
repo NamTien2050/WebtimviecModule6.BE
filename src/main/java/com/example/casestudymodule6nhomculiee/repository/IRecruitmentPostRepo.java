@@ -16,5 +16,11 @@ public interface IRecruitmentPostRepo  extends JpaRepository<RecruitmentPost, Lo
     @Query("select a from RecruitmentPost a where a.status = ?1")
     List<RecruitmentPost> findAllByStatus(Boolean status);
 
+    @Query("select a from RecruitmentPost a where a.minSalary > ?1")
+    List<RecruitmentPost> findAllBySalaryHot(double minSalary);
+
+    @Query("select a from RecruitmentPost a where a.field = ?1 or a.field = ?2")
+    List<RecruitmentPost> findAllByFieldHot(String field1,String field2);
+
    // Iterable<RecruitmentPost> findAllByAppUser(AppUser appUser);
 }
