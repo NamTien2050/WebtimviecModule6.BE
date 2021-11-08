@@ -53,7 +53,7 @@ public class RestEmploymentController {
     public ResponseEntity<?> createRecruitmentPost(@RequestBody RecruitmentPost recruitmentPost) {
         Long id = recruitmentPost.getAppUser().getId();
         AppUser appUser = appUserService.findById(id);
-        EmployerDetail employerDetail = employmentService.getEmplementByUser(appUser);
+        EmployerDetail employerDetail = employmentService.findEmployerByUserId(appUser);
         recruitmentPost.setLogo(employerDetail.getLogo());
         recruitmentPost.setNameEmployer(employerDetail.getName());
         recruitmentPostService.save(recruitmentPost);

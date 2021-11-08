@@ -169,7 +169,7 @@ public class RestLoginController {
     @GetMapping("/EmploymentByUser/{id}")
     public ResponseEntity<?> getEmploymentByUser(@PathVariable Long id){
         AppUser appUser = userService.findById(id);
-        EmployerDetail employerDetail = employmentService.getEmplementByUser(appUser);
+        EmployerDetail employerDetail = employmentService.findEmployerByUserId(appUser);
         return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
     }
     @GetMapping("/AllListPost")
