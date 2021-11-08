@@ -2,14 +2,12 @@ package com.example.casestudymodule6nhomculiee.controller;
 
 import com.example.casestudymodule6nhomculiee.dto.ChangeStatus;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
+import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.JobApply;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.model.Entity.UserProfile;
 import com.example.casestudymodule6nhomculiee.model.User.AppUser;
-import com.example.casestudymodule6nhomculiee.service.AppUserService;
-import com.example.casestudymodule6nhomculiee.service.IRecruitmentPostService;
-import com.example.casestudymodule6nhomculiee.service.JobApplyService;
-import com.example.casestudymodule6nhomculiee.service.UserProfileService;
+import com.example.casestudymodule6nhomculiee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
@@ -32,6 +30,8 @@ public class RestEmploymentController {
     JobApplyService jobApplyService;
     @Autowired
     UserProfileService userProfileService;
+    @Autowired
+    EmploymentService employmentService;
 //    @GetMapping
 //    public ResponseEntity<?> pageCategory(@PageableDefault(sort = "nameCategory", direction = Sort.Direction.ASC) Pageable pageable){
 //        Page<Category> categoryPage = categoryService.findAll(pageable);
@@ -42,22 +42,28 @@ public class RestEmploymentController {
 //    }
 
     @GetMapping("/list/{id}")
-    public ResponseEntity<?> RecruitmentPostList(@PathVariable Long id){
+    public ResponseEntity<?> RecruitmentPostList(@PathVariable Long id) {
 
-        Iterable<RecruitmentPost> recruitmentPostList= recruitmentPostService.findRecruitmentPostByAppUser_Id(id);
+        Iterable<RecruitmentPost> recruitmentPostList = recruitmentPostService.findRecruitmentPostByAppUser_Id(id);
         return new ResponseEntity<>(recruitmentPostList, HttpStatus.OK);
     }
 
 
     @PostMapping
-    public ResponseEntity<?> createRecruitmentPost( @RequestBody RecruitmentPost recruitmentPost){
+    public ResponseEntity<?> createRecruitmentPost(@RequestBody RecruitmentPost recruitmentPost) {
+        Long id = recruitmentPost.getAppUser().getId();
+        AppUser appUser = appUserService.findById(id);
+        EmployerDetail employerDetail = employmentService.getEmplementByUser(appUser);
+        recruitmentPost.setLogo(employerDetail.getLogo());
+        recruitmentPost.setNameEmployer(employerDetail.getName());
         recruitmentPostService.save(recruitmentPost);
         return new ResponseEntity<>(new RespondMessage("create_success"), HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRecruitmentPost(@PathVariable Long id){
+    public ResponseEntity<?> deleteRecruitmentPost(@PathVariable Long id) {
         Optional<RecruitmentPost> recruitmentPost = recruitmentPostService.findById(id);
-        if(!recruitmentPost.isPresent()){
+        if (!recruitmentPost.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         recruitmentPostService.remove(id);
@@ -65,7 +71,7 @@ public class RestEmploymentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateRecruitmentPost(@PathVariable Long id, @RequestBody RecruitmentPost recruitmentPost){
+    public ResponseEntity<?> updateRecruitmentPost(@PathVariable Long id, @RequestBody RecruitmentPost recruitmentPost) {
 
 
         Optional<RecruitmentPost> recruitmentPost1 = recruitmentPostService.findById(id);
@@ -88,40 +94,41 @@ public class RestEmploymentController {
         return new ResponseEntity<>(new RespondMessage("update_success"), HttpStatus.OK);
 
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> detailRecruitmentPost(@PathVariable Long id){
+    public ResponseEntity<?> detailRecruitmentPost(@PathVariable Long id) {
         Optional<RecruitmentPost> recruitmentPost = recruitmentPostService.findById(id);
-        if(!recruitmentPost.isPresent()){
+        if (!recruitmentPost.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(recruitmentPost.get(), HttpStatus.OK);
     }
 
     @PutMapping("/updateStatus/{id}")
-    public ResponseEntity<?> updateRecruitmentPostStatus (@PathVariable Long id , @RequestBody ChangeStatus changeStatus){
+    public ResponseEntity<?> updateRecruitmentPostStatus(@PathVariable Long id, @RequestBody ChangeStatus changeStatus) {
         Optional<RecruitmentPost> recruitmentPost1 = recruitmentPostService.findById(id);
-        if (changeStatus.isStatus()){
+        if (changeStatus.isStatus()) {
             recruitmentPost1.get().setStatus(true);
-        }
-        else {
+        } else {
             recruitmentPost1.get().setStatus(false);
         }
         recruitmentPostService.save(recruitmentPost1.get());
-        return new ResponseEntity<>(recruitmentPost1.get().isStatus(),HttpStatus.OK);
+        return new ResponseEntity<>(recruitmentPost1.get().isStatus(), HttpStatus.OK);
     }
+
     @GetMapping("/UserProfileofEmployment/{id}")
-    public ResponseEntity<?> UserProfileOfEmployment(@PathVariable Long id){
+    public ResponseEntity<?> UserProfileOfEmployment(@PathVariable Long id) {
         RecruitmentPost recruitmentPost = recruitmentPostService.findById(id).get();
-        List<JobApply> jobApplyList = jobApplyService.jobApplyListByPost(recruitmentPost,false);
+        List<JobApply> jobApplyList = jobApplyService.jobApplyListByPost(recruitmentPost, false);
         List<AppUser> appUsers = new ArrayList<>();
         List<UserProfile> userProfiles = new ArrayList<>();
-        for (int i =0; i<jobApplyList.size();i++){
-            if(jobApplyList.get(i).getAppUser()!=null)
-            appUsers.add(jobApplyList.get(i).getAppUser());
+        for (int i = 0; i < jobApplyList.size(); i++) {
+            if (jobApplyList.get(i).getAppUser() != null)
+                appUsers.add(jobApplyList.get(i).getAppUser());
         }
-        for (int i=0;i<appUsers.size();i++){
-           UserProfile userProfile = userProfileService.getUserProfileByAppUser(appUsers.get(i));
-           userProfiles.add(userProfile);
+        for (int i = 0; i < appUsers.size(); i++) {
+            UserProfile userProfile = userProfileService.getUserProfileByAppUser(appUsers.get(i));
+            userProfiles.add(userProfile);
         }
 
         return new ResponseEntity<>(userProfiles, HttpStatus.OK);

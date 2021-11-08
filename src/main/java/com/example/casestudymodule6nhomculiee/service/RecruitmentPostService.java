@@ -3,6 +3,8 @@ package com.example.casestudymodule6nhomculiee.service;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.repository.IRecruitmentPostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -33,6 +35,11 @@ public class RecruitmentPostService implements IRecruitmentPostService{
     @Override
     public Iterable<RecruitmentPost> findRecruitmentPostByAppUser_Id(Long id) {
         return recruitmentPostRepo.findRecruitmentPostByAppUser_Id(id);
+    }
+
+    @Override
+    public Page<RecruitmentPost> findAllPage(Pageable pageable) {
+        return recruitmentPostRepo.findAll(pageable);
     }
 
 }
