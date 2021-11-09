@@ -42,4 +42,10 @@ public class RecruitmentPostService implements IRecruitmentPostService{
         return recruitmentPostRepo.findAll(pageable);
     }
 
+    @Override
+    public Page<RecruitmentPost> findAllByField(String field, Pageable pageable) {
+        return recruitmentPostRepo.findAllByField(field, pageable);
+    }
+
+
 }

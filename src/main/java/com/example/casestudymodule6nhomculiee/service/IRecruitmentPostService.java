@@ -7,4 +7,5 @@ import org.springframework.data.domain.Pageable;
 public interface IRecruitmentPostService extends IGeneralService<RecruitmentPost> {
     Iterable<RecruitmentPost> findRecruitmentPostByAppUser_Id(Long id);
     Page<RecruitmentPost> findAllPage(Pageable pageable);
+    Page<RecruitmentPost> findAllByField(String field, Pageable pageable);
 }
