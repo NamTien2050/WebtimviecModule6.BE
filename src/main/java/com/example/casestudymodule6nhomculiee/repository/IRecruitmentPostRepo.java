@@ -23,4 +23,14 @@ public interface IRecruitmentPostRepo extends JpaRepository<RecruitmentPost, Lon
     @Query("select a from RecruitmentPost a where a.status = ?1")
     List<RecruitmentPost> findAllByStatus(Boolean status);
     // Iterable<RecruitmentPost> findAllByAppUser(AppUser appUser);
+
+    @Query(nativeQuery = true, value = "SELECT *" +
+            "FROM RecruitmentPost WHERE (:field IS NULL OR field LIKE %:field%)" +
+            "AND (:minSalary IS NULL OR minSalary >= :minSalary)" +
+            "AND (:jobName IS NULL OR jobName LIKE %:jobName%)" +
+            "AND (:location IS NULL OR location LIKE %:location%)")
+    Iterable<RecruitmentPost> searchAdvanced(@Param("field") String field,
+                                             @Param("minSalary") double minSalary,
+                                             @Param("jobName") String jobName,
+                                             @Param("location") String location);
 }

@@ -17,6 +17,7 @@ public class RecruitmentPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String jobName;
     private String title;
     private double minSalary;
     private double maxSalary;

@@ -23,6 +23,11 @@ public class RecruitmentPostService implements IRecruitmentPostService {
     }
 
     @Override
+    public Iterable<RecruitmentPost> searchAdvanced(String field, Integer minSalary, String jobName, String location) {
+        return recruitmentPostRepo.searchAdvanced(field, minSalary, jobName, location);
+    }
+
+    @Override
     public Optional<RecruitmentPost> findById(Long id) {
         return recruitmentPostRepo.findById(id);
     }

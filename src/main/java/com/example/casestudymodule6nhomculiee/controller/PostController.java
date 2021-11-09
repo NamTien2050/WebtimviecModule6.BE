@@ -45,6 +45,12 @@ public class PostController {
             return new ResponseEntity<>(fields, HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(fields, HttpStatus.OK);
     }
+
+    @GetMapping("/searchAdvanced/{field}/{minSalary}/{jobName}/{location}")
+    public ResponseEntity<Iterable<RecruitmentPost>> searchAdvanced(@PathVariable String field,@PathVariable Integer minSalary,@PathVariable String jobName,@PathVariable String location) {
+        List<RecruitmentPost> postList = (List<RecruitmentPost>) iRecruitmentPostService.searchAdvanced(field,minSalary,jobName,location);
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
 //@PostMapping
 //    public ResponseEntity<Iterable<RecruitmentPost>> createPost(){
 //}
