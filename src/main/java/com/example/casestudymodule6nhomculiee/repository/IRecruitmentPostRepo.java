@@ -27,26 +27,22 @@ public interface IRecruitmentPostRepo extends JpaRepository<RecruitmentPost, Lon
     List<RecruitmentPost> findAllByStatus(Boolean status);
     // Iterable<RecruitmentPost> findAllByAppUser(AppUser appUser);
 
-    @Query(nativeQuery = true, value = "SELECT *" +
-            "FROM RecruitmentPost WHERE (:field IS NULL OR field LIKE %:field%)" +
-            "AND (:minSalary IS NULL OR minSalary >= :minSalary)" +
-            "AND (:jobName IS NULL OR jobName LIKE %:jobName%)" +
-            "AND (:location IS NULL OR location LIKE %:location%)")
-    Iterable<RecruitmentPost> searchAdvanced(@Param("field") String field,
-                                             @Param("minSalary") double minSalary,
-                                             @Param("jobName") String jobName,
-                                             @Param("location") String location);
+    @Query("select r from RecruitmentPost r where lower(r.jobName) like lower(concat('%',:search,'%') ) " +
+            "or lower(r.minSalary)like lower(concat('%',:search,'%') ) " +
+            "or lower(r.expectation)like lower(concat('%',:search,'%') ) "+
+            "or lower(r.location)like lower(concat('%',:search,'%') ) "
+    )
+    Iterable<RecruitmentPost> searchAdvanced(@Param("search") String search);
+
     @Query("select a from RecruitmentPost a where a.minSalary > ?1")
     List<RecruitmentPost> findAllBySalaryHot(double minSalary);
 
     @Query("select a from RecruitmentPost a where a.field = ?1 or a.field = ?2")
-    List<RecruitmentPost> findAllByFieldHot(String field1,String field2);
-
+    List<RecruitmentPost> findAllByFieldHot(String field1, String field2);
 
 
     @Query("select a from RecruitmentPost a where a.title like %?1% and  a.location like %?2% and a.minSalary > ?3 and a.minSalary < ?3 +10 ")
-    Page<RecruitmentPost> findRecruitmentPostByTitleAndLocationAndMinSalary(String t,String l, double n,Pageable pageable);
-
+    Page<RecruitmentPost> findRecruitmentPostByTitleAndLocationAndMinSalary(String t, String l, double n, Pageable pageable);
 
 
     // Iterable<RecruitmentPost> findAllByAppUser(AppUser appUser);

@@ -18,7 +18,7 @@ public interface IRecruitmentPostService extends IGeneralService<RecruitmentPost
 
     Iterable<RecruitmentPost> showAllPost();
 
-    Iterable<RecruitmentPost> searchAdvanced(String field, Integer minSalary, String jobName, String location);
+    Iterable<RecruitmentPost> searchAdvanced(String search);
     List<RecruitmentPost> findAllBySalaryHot();
     List<RecruitmentPost> findAllByFiledHot();
     Page<RecruitmentPost> findAllPage(Pageable pageable);
