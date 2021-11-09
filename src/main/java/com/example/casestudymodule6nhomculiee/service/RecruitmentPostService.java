@@ -3,6 +3,8 @@ package com.example.casestudymodule6nhomculiee.service;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.repository.IRecruitmentPostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +45,14 @@ public class RecruitmentPostService implements IRecruitmentPostService{
     public List<RecruitmentPost> findAllByFiledHot(){
         return recruitmentPostRepo.findAllByFieldHot("IT","Tài chính");
     }
+   @Override
+   public Page<RecruitmentPost> findByTitleAndLocationAndSalary(String t, String l, double s, Pageable pageable){
+        return recruitmentPostRepo.findRecruitmentPostByTitleAndLocationAndMinSalary(t,l,s,pageable);
+    }
+    @Override
+    public Page<RecruitmentPost> findAllPage(Pageable pageable) {
+        return recruitmentPostRepo.findAll(pageable);
+    }
+
 
 }

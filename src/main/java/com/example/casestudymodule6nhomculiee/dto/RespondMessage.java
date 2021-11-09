@@ -1,12 +1,12 @@
 package com.example.casestudymodule6nhomculiee.dto;
 
-public class ResponMessage {
+public class RespondMessage {
     private String message;
 
-    public ResponMessage() {
+    public RespondMessage() {
     }
 
-    public ResponMessage(String message) {
+    public RespondMessage(String message) {
         this.message = message;
     }
 

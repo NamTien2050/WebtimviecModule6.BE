@@ -6,6 +6,7 @@ import com.example.casestudymodule6nhomculiee.model.User.AppUser;
 import com.example.casestudymodule6nhomculiee.service.EmploymentService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ public interface IEmploymentRepo extends JpaRepository<EmployerDetail,Long> {
 
     @Query("select a from EmployerDetail a where a.name = ?1")
     EmployerDetail getEmployerDetailByByName(String name);
+
+    @Query(value = "select * from employer_detail  where user_id =:id",nativeQuery = true)
+    EmployerDetail findEmployerDetailsByUserid(@Param("id") Long id);
 
 
 }

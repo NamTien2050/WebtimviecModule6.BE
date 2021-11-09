@@ -1,5 +1,5 @@
 package com.example.casestudymodule6nhomculiee.controller;
-import com.example.casestudymodule6nhomculiee.dto.ResponMessage;
+import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
 import com.example.casestudymodule6nhomculiee.dto.TopCompanys;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
@@ -10,6 +10,10 @@ import com.example.casestudymodule6nhomculiee.model.User.VerifiAccount;
 import com.example.casestudymodule6nhomculiee.securityJWT.UserRespo;
 import com.example.casestudymodule6nhomculiee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -87,10 +90,10 @@ public class RestLoginController {
     @RequestMapping(value = "/register/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> Register(@RequestBody AppUser appUser,@PathVariable Long id){
         if(userService.existsByUsername(appUser.getUsername())){
-            return new ResponseEntity<>(new ResponMessage("no_user"), HttpStatus.OK);
+            return new ResponseEntity<>(new RespondMessage("no_user"), HttpStatus.OK);
         }
         if(userService.existsByEmail(appUser.getEmail())){
-            return new ResponseEntity<>(new ResponMessage("no_email"), HttpStatus.OK);
+            return new ResponseEntity<>(new RespondMessage("no_email"), HttpStatus.OK);
         }
         AppRole role = roleService.findById(id).get();
         System.out.println(role.getName());
@@ -111,7 +114,7 @@ public class RestLoginController {
         sendmail.setText("http://localhost:8080/rest/verification/" + newVerifi.getId() + "/" + appUser.getId() + "?token=" + token);
 
         javaMailSender.send(sendmail);
-        return new ResponseEntity<>(new ResponMessage("yes"),HttpStatus.OK);
+        return new ResponseEntity<>(new RespondMessage("yes"),HttpStatus.OK);
 
 
     }
@@ -247,6 +250,20 @@ public class RestLoginController {
         List<RecruitmentPost> list = (List<RecruitmentPost>) recruitmentPostService.findRecruitmentPostByAppUser_Id(appUser.getId());;
         return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
 
+    }
+    @GetMapping("/find/{t}/{l}/{s}")
+    public ResponseEntity<?> find(@PathVariable String t, @PathVariable String l, @PathVariable double s, Pageable pageable){
+        Page<RecruitmentPost> list = recruitmentPostService.findByTitleAndLocationAndSalary(t,l,s,pageable);
+        return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+
+    }
+    @GetMapping("/recruitmentPostPage")
+    public ResponseEntity<?> pageRecruitmentPost(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<RecruitmentPost> recruitmentPostPage = recruitmentPostService.findAllPage(pageable);
+        if(recruitmentPostPage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(recruitmentPostPage, HttpStatus.OK);
     }
 
 
