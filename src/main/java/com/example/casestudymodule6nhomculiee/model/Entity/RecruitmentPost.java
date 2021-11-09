@@ -19,6 +19,8 @@ public class RecruitmentPost {
     private Long id;
     private String jobName;
     private String title;
+    private String nameEmployer;
+    private String logo;
     private double minSalary;
     private double maxSalary;
     private int quantity;
@@ -27,6 +29,7 @@ public class RecruitmentPost {
     private String workType;
     private String position;
     private String experience;
+    private String expectation;
     private String description;
     private LocalDate Date;
     private String field; //Lĩnh vực : tài chính, IT;

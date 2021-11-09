@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.controller;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
+import com.example.casestudymodule6nhomculiee.dto.TopCompanys;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.model.Entity.UserProfile;
@@ -9,6 +10,10 @@ import com.example.casestudymodule6nhomculiee.model.User.VerifiAccount;
 import com.example.casestudymodule6nhomculiee.securityJWT.UserRespo;
 import com.example.casestudymodule6nhomculiee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @RestController
 @RequestMapping("/rest")

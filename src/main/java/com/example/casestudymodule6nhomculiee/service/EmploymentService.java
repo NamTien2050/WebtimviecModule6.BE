@@ -27,5 +27,12 @@ public class EmploymentService {
      public EmployerDetail getEmplementByUser(AppUser appUser){
          return iEmploymentRepo.getEmployerDetailByByAppUser(appUser);
      }
+    public EmployerDetail getEmplementByName(String name){
+        return iEmploymentRepo.getEmployerDetailByByName(name);
+    }
+
+    public EmployerDetail findEmployerByUserId (AppUser appUser){
+        return iEmploymentRepo.findEmployerDetailsByUserid(appUser.getId());
+    }
 
 }

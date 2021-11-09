@@ -2,20 +2,18 @@ package com.example.casestudymodule6nhomculiee.controller;
 
 import com.example.casestudymodule6nhomculiee.dto.ChangeStatus;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
+import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.JobApply;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.model.Entity.UserProfile;
 import com.example.casestudymodule6nhomculiee.model.User.AppUser;
-import com.example.casestudymodule6nhomculiee.service.AppUserService;
-import com.example.casestudymodule6nhomculiee.service.IRecruitmentPostService;
-import com.example.casestudymodule6nhomculiee.service.JobApplyService;
-import com.example.casestudymodule6nhomculiee.service.UserProfileService;
+import com.example.casestudymodule6nhomculiee.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +30,8 @@ public class RestEmploymentController {
     JobApplyService jobApplyService;
     @Autowired
     UserProfileService userProfileService;
+    @Autowired
+    EmploymentService employmentService;
 //    @GetMapping
 //    public ResponseEntity<?> pageCategory(@PageableDefault(sort = "nameCategory", direction = Sort.Direction.ASC) Pageable pageable){
 //        Page<Category> categoryPage = categoryService.findAll(pageable);
@@ -51,6 +51,11 @@ public class RestEmploymentController {
 
     @PostMapping
     public ResponseEntity<?> createRecruitmentPost( @RequestBody RecruitmentPost recruitmentPost){
+        Long id = recruitmentPost.getAppUser().getId();
+        AppUser appUser = appUserService.findById(id);
+        EmployerDetail employerDetail = employmentService.findEmployerByUserId(appUser);
+        recruitmentPost.setLogo(employerDetail.getLogo());
+        recruitmentPost.setNameEmployer(employerDetail.getName());
         recruitmentPostService.save(recruitmentPost);
         return new ResponseEntity<>(new RespondMessage("create_success"), HttpStatus.OK);
     }
@@ -116,6 +121,7 @@ public class RestEmploymentController {
         List<AppUser> appUsers = new ArrayList<>();
         List<UserProfile> userProfiles = new ArrayList<>();
         for (int i =0; i<jobApplyList.size();i++){
+            if(jobApplyList.get(i).getAppUser()!=null)
             appUsers.add(jobApplyList.get(i).getAppUser());
         }
         for (int i=0;i<appUsers.size();i++){
@@ -124,6 +130,19 @@ public class RestEmploymentController {
         }
 
         return new ResponseEntity<>(userProfiles, HttpStatus.OK);
+    }
+    @GetMapping("/pickUserProfile/{id_user}/{id_post}")
+    public ResponseEntity<?> PickUserProfile(@PathVariable Long id_user,@PathVariable Long id_post){
+        AppUser appUser = appUserService.findById(id_user);
+        RecruitmentPost recruitmentPost = recruitmentPostService.findById(id_post).get();
+        JobApply jobApply = jobApplyService.pickUserProfile(recruitmentPost,appUser);
+        jobApply.setStatus(true);
+        jobApply.setDate(LocalDate.now());
+        jobApply.setNotify("Hồ sơ của bạn đã được chọn, vui lòng tới công ty"+"" +recruitmentPost.getNameEmployer()+" tại địa chỉ" + "" +recruitmentPost.getLocation()+"để phỏng vấn");
+        jobApplyService.save(jobApply);
+        return new ResponseEntity<>("thành công", HttpStatus.OK);
+
+
     }
 
 }

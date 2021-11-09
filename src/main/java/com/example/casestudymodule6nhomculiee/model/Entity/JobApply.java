@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -16,7 +17,9 @@ public class JobApply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String notify;
     private boolean status;
+    private LocalDate date;
 
     @OneToOne
     @JoinColumn(name ="user_id")
