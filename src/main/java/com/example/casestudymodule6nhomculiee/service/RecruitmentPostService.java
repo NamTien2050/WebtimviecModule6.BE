@@ -26,8 +26,8 @@ public class RecruitmentPostService implements IRecruitmentPostService {
     }
 
     @Override
-    public Iterable<RecruitmentPost> searchAdvanced(String search) {
-        return recruitmentPostRepo.searchAdvanced(search);
+    public Page<RecruitmentPost> searchAdvanced(Pageable pageable,String search) {
+        return recruitmentPostRepo.searchAdvanced( pageable,search);
     }
 
     @Override

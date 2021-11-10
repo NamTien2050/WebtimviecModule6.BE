@@ -27,12 +27,12 @@ public interface IRecruitmentPostRepo extends JpaRepository<RecruitmentPost, Lon
     List<RecruitmentPost> findAllByStatus(Boolean status);
     // Iterable<RecruitmentPost> findAllByAppUser(AppUser appUser);
 
-    @Query("select r from RecruitmentPost r where lower(r.jobName) like lower(concat('%',:search,'%') ) " +
+    @Query("select r from RecruitmentPost r where lower(r.title) like lower(concat('%',:search,'%') ) " +
             "or lower(r.minSalary)like lower(concat('%',:search,'%') ) " +
             "or lower(r.expectation)like lower(concat('%',:search,'%') ) "+
             "or lower(r.location)like lower(concat('%',:search,'%') ) "
     )
-    Iterable<RecruitmentPost> searchAdvanced(@Param("search") String search);
+    Page<RecruitmentPost> searchAdvanced(@Param("search") Pageable pageable, String search);
 
     @Query("select a from RecruitmentPost a where a.minSalary > ?1")
     List<RecruitmentPost> findAllBySalaryHot(double minSalary);

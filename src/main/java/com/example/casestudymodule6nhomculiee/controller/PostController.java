@@ -4,6 +4,8 @@ import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
 import com.example.casestudymodule6nhomculiee.service.IRecruitmentPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -49,10 +51,8 @@ public class PostController {
     }
 
     @GetMapping("/searchAdvanced")
-    public ResponseEntity<Iterable<RecruitmentPost>> searchAdvanced(@RequestParam(name = "search") String search, Model model) {
-//        RecruitmentPost recruitmentPost = (RecruitmentPost) iRecruitmentPostService.searchAdvanced(search);
-//        model.addAllAttributes("recruitmentPosts", recruitmentPost);
-        List<RecruitmentPost> postList = (List<RecruitmentPost>) iRecruitmentPostService.searchAdvanced(search);
+    public ResponseEntity<Page<RecruitmentPost>> searchAdvanced(@RequestParam(name = "search") String search, Pageable pageable) {
+        Page<RecruitmentPost> postList = iRecruitmentPostService.searchAdvanced(pageable, search);
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 //@PostMapping
