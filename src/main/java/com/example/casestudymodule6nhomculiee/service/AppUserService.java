@@ -71,5 +71,8 @@ public class AppUserService {
         return appUserRepository.getAppUserByEmail(email);
 
     }
+    public List<AppUser> findAllByRole(){
+        return appUserRepository.getAppUserByRole("ROLE_EMPLOYMENT");
+    }
 
 }

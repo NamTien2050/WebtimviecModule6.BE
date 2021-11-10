@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.controller;
 
+import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.JobApply;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
@@ -29,6 +30,10 @@ public class RestUserController {
     public ResponseEntity<?> showListEmploymentAuthenticated(@PathVariable Long id_user,@PathVariable Long id_post){
         AppUser appUser = appUserService.findById(id_user);
         RecruitmentPost recruitmentPost = recruitmentPostService.findById(id_post).get();
+        JobApply jobApply1 = jobApplyService.pickUserProfile(recruitmentPost,appUser);
+        if(jobApply1 !=null){
+            return new ResponseEntity<>(jobApply1,HttpStatus.ACCEPTED);
+        }
         JobApply jobApply = new JobApply();
         jobApply.setAppUser(appUser);
         jobApply.setRecuitmentPost(recruitmentPost);

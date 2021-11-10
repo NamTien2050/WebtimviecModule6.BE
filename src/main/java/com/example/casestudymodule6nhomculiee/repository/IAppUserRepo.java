@@ -18,5 +18,9 @@ public interface IAppUserRepo extends JpaRepository<AppUser,Long> {
     @Query("select a from AppUser a where a.email = ?1")
     AppUser getAppUserByEmail(String email);
 
+    @Query("select a from AppUser a where a.roll.name = ?1")
+    List<AppUser> getAppUserByRole(String role);
+
+
 
 }

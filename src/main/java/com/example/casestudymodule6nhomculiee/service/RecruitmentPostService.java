@@ -46,13 +46,44 @@ public class RecruitmentPostService implements IRecruitmentPostService{
         return recruitmentPostRepo.findAllByFieldHot("IT","Tài chính");
     }
    @Override
-   public Page<RecruitmentPost> findByTitleAndLocationAndSalary(String t, String l, double s, Pageable pageable){
-        return recruitmentPostRepo.findRecruitmentPostByTitleAndLocationAndMinSalary(t,l,s,pageable);
+   public Page<RecruitmentPost> findByTitleAndLocationAndSalary(String t, String l, double min, Pageable pageable){
+        return recruitmentPostRepo.findRecruitmentPostByTitleAndLocationAndMinSalary(t,l,min,pageable);
     }
     @Override
     public Page<RecruitmentPost> findAllPage(Pageable pageable) {
         return recruitmentPostRepo.findAll(pageable);
     }
 
+    @Override
+    public Page<RecruitmentPost> findByTitleAndLocation(String t, String l, Pageable pageable) {
+        return recruitmentPostRepo.findAllByTitleAndLocationContaining(t,l,pageable);
+    }
 
+    @Override
+    public Page<RecruitmentPost> findByTitleAndSalary(String t, double salary, Pageable pageable) {
+        return recruitmentPostRepo.findAllByTitleAndMinSalaryContaining(t,salary,pageable);
+    }
+
+    @Override
+    public Page<RecruitmentPost> findByLocationAndSalary(String location, double salary, Pageable pageable) {
+        return recruitmentPostRepo.findAllByLocationAndMinSalaryContaining(location,salary,pageable);
+    }
+    @Override
+    public Page<RecruitmentPost> findAllByTitleContaining(String title, Pageable pageable){
+        return recruitmentPostRepo.findAllByTitleContaining(title,pageable);
+    }
+
+    @Override
+    public Page<RecruitmentPost> findAllByNameEmployerContaining(String nameEmployer, Pageable pageable) {
+        return recruitmentPostRepo.findAllByNameEmployerContaining(nameEmployer,pageable);
+    }
+    @Override
+    public Page<RecruitmentPost> findAllByField(String field, Pageable pageable) {
+        return recruitmentPostRepo.findAllByField(field, pageable);
+    }
+
+    @Override
+    public Page<RecruitmentPost> findAllPageField(String search,Pageable pageable) {
+        return recruitmentPostRepo.searchAdvanced(search,pageable);
+    }
 }

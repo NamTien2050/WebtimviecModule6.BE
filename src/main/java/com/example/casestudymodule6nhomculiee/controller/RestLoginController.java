@@ -1,5 +1,6 @@
 package com.example.casestudymodule6nhomculiee.controller;
 import com.example.casestudymodule6nhomculiee.dto.RespondMessage;
+import com.example.casestudymodule6nhomculiee.dto.Search;
 import com.example.casestudymodule6nhomculiee.dto.TopCompanys;
 import com.example.casestudymodule6nhomculiee.model.Entity.EmployerDetail;
 import com.example.casestudymodule6nhomculiee.model.Entity.RecruitmentPost;
@@ -19,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +64,6 @@ public class RestLoginController {
     @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> login(HttpServletRequest request, @RequestBody AppUser user) {
         AppUser appUser = userService.loadUserByUsername(user.getUsername());
-
         Long id = appUser.getId();
         String role = appUser.getRoll().getName();
         String result = "";
@@ -70,7 +71,7 @@ public class RestLoginController {
         try {
             if(userService.checkLogin(user)) {
                 result = jwtService.generateTokenLogin(user.getUsername());
-                UserRespo userRespo = new UserRespo(result,id,user.getUsername(),user.getAvatar(),role);
+                UserRespo userRespo = new UserRespo(result,id,appUser.getUsername(),appUser.getAvatar(),role,appUser.getEmail());
                 httpStatus = HttpStatus.OK;
                 return new ResponseEntity<>(userRespo,httpStatus);
             } else {
@@ -167,8 +168,13 @@ public class RestLoginController {
         EmployerDetail employerDetail = employmentService.findEmploymentById(id);
         return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
     }
+    @GetMapping("/EmploymentByName/{name}")
+    public ResponseEntity<?> getEmploymentByName(@PathVariable String name){
+        EmployerDetail employerDetail = employmentService.getEmplementByName(name);
+        return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
+    }
     @GetMapping("/EmploymentByUser/{id}")
-    public ResponseEntity<?> getEmploymentByUser(@PathVariable Long id){
+    public ResponseEntity<?> getEmploymentByUserId(@PathVariable Long id){
         AppUser appUser = userService.findById(id);
         EmployerDetail employerDetail = employmentService.getEmplementByUser(appUser);
         return new ResponseEntity<>(employerDetail,HttpStatus.ACCEPTED);
@@ -203,7 +209,7 @@ public class RestLoginController {
         String name = null;
         List<EmployerDetail> employerDetails = new ArrayList<>();
         List<TopCompanys> topCompanys = new ArrayList<>();
-        List<AppUser> list = appUserService.showAll();
+        List<AppUser> list = appUserService.findAllByRole();
         for (int i =0; i< list.size();i++){
             int total = 0;
             List<RecruitmentPost> postList = (List<RecruitmentPost>) recruitmentPostService.findRecruitmentPostByAppUser_Id(list.get(i).getId());
@@ -251,10 +257,25 @@ public class RestLoginController {
         return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
 
     }
-    @GetMapping("/find/{t}/{l}/{s}")
-    public ResponseEntity<?> find(@PathVariable String t, @PathVariable String l, @PathVariable double s, Pageable pageable){
-        Page<RecruitmentPost> list = recruitmentPostService.findByTitleAndLocationAndSalary(t,l,s,pageable);
-        return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+    @PostMapping("/find")
+    public ResponseEntity<?> find(@RequestBody Search search, Pageable pageable){
+        if(search.getTitle()!=null&&search.getLocation()!=null&&search.getSalary()!=null) {
+            Page<RecruitmentPost> list = recruitmentPostService.findByTitleAndLocationAndSalary(search.getTitle(), search.getLocation(), search.getSalary(), pageable);
+            return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+        }else if(search.getTitle()!=null&&search.getLocation()!=null){
+            Page<RecruitmentPost> list = recruitmentPostService.findByTitleAndLocation(search.getTitle(), search.getLocation(),pageable);
+            return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+        }else if(search.getTitle()!=null&&search.getLocation()==null&&search.getSalary()!=null){
+            Page<RecruitmentPost> list = recruitmentPostService.findByTitleAndSalary(search.getTitle(),search.getSalary(),pageable);
+            return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+        }else if(search.getTitle()==null&&search.getLocation()!=null&search.getSalary()!=null){
+            Page<RecruitmentPost> list = recruitmentPostService.findByLocationAndSalary(search.getLocation(),search.getSalary(),pageable);
+            return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+        }else if(search.getTitle()!=null){
+            Page<RecruitmentPost> list = recruitmentPostService.findAllByTitleContaining(search.getTitle(),pageable);
+            return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
 
     }
     @GetMapping("/recruitmentPostPage")
@@ -264,6 +285,47 @@ public class RestLoginController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(recruitmentPostPage, HttpStatus.OK);
+    }
+
+    @GetMapping("/findPage/{name}")
+    public ResponseEntity<?> findAllByTitle(@PathVariable String name, Pageable pageable){
+        Page<RecruitmentPost> list = recruitmentPostService.findAllByNameEmployerContaining(name,pageable);
+        return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+
+    }
+
+    @GetMapping("/findPageByTitelAndSalary/{t}/{s}")
+    public ResponseEntity<?> findAllByTitleAndSalary(@PathVariable String t, @PathVariable double s, Pageable pageable){
+        Page<RecruitmentPost> list = recruitmentPostService.findByTitleAndSalary(t,s,pageable);
+        return new ResponseEntity<>(list,HttpStatus.ACCEPTED);
+
+    }
+
+
+    @GetMapping("/getFieldList")
+    public ResponseEntity<?> getFieldList() {
+        List<String> fieldList = new ArrayList<>();
+        List<RecruitmentPost> recruitmentPosts = (List<RecruitmentPost>) recruitmentPostService.findAll();
+        for (int i = 0; i < recruitmentPosts.size(); i++) {
+            String object = recruitmentPosts.get(i).getField();
+            if (!fieldList.contains(object)) {
+                fieldList.add(object);
+            }
+        }
+        return new ResponseEntity<>(fieldList, HttpStatus.OK);
+    }
+
+    @GetMapping("/getRecruitmentPostByField/{field}")
+    public ResponseEntity<?> getRecruitmentPostByField(@PathVariable String field, Pageable pageable) {
+        Page<RecruitmentPost> recruitmentPosts = recruitmentPostService.findAllByField(field, pageable);
+        return new ResponseEntity<>(recruitmentPosts, HttpStatus.OK);
+    }
+    @GetMapping("/searchAdvanced")
+    public ResponseEntity<Iterable<RecruitmentPost>> searchAdvanced(@RequestParam(name = "search") String search, Pageable pageable) {
+//        RecruitmentPost recruitmentPost = (RecruitmentPost) iRecruitmentPostService.searchAdvanced(search);
+//        model.addAllAttributes("recruitmentPosts", recruitmentPost);
+        Page<RecruitmentPost> postList = recruitmentPostService.findAllPageField(search,pageable);
+        return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
 

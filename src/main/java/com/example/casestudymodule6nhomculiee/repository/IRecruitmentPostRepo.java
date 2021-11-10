@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,8 +27,47 @@ public interface IRecruitmentPostRepo  extends JpaRepository<RecruitmentPost, Lo
 
 
 
-    @Query("select a from RecruitmentPost a where a.title like %?1% and  a.location like %?2% and a.minSalary > ?3 and a.minSalary < ?3 +10 ")
-    Page<RecruitmentPost> findRecruitmentPostByTitleAndLocationAndMinSalary(String t,String l, double n,Pageable pageable);
+    @Query("select a from RecruitmentPost a where a.title like %?1% and  a.location like %?2% and a.minSalary > ?3 and a.minSalary  < ?3 +5 ")
+    Page<RecruitmentPost> findRecruitmentPostByTitleAndLocationAndMinSalary(String t,String l, double min,Pageable pageable);
+
+    @Query("select a from RecruitmentPost a where a.title like %?1% and  a.location like %?2% ")
+    Page<RecruitmentPost> findAllByTitleAndLocationContaining(String title,String location, Pageable pageable);
+
+    @Query("select a from RecruitmentPost a where a.title like %?1% and  a.minSalary < ?2 and a.minSalary +5 > ?2 ")
+    Page<RecruitmentPost> findAllByTitleAndMinSalaryContaining(String title,double min, Pageable pageable);
+
+
+    @Query("select a from RecruitmentPost a where a.location like %?1% and  a.minSalary < ?2 and a.minSalary +5 > ?2 ")
+    Page<RecruitmentPost> findAllByLocationAndMinSalaryContaining(String title,double min, Pageable pageable);
+
+
+    @Query("select a from RecruitmentPost a where a.title like %?1%  ")
+    Page<RecruitmentPost> findAllByTitleContaining(String title, Pageable pageable);
+
+    @Query("select a from RecruitmentPost a where a.location like %?1%  ")
+    Page<RecruitmentPost> findAllByLocationContaining(String location, Pageable pageable);
+
+
+    @Query("select a from RecruitmentPost a where a.minSalary > ?2 and a.minSalary  < ?2 +5  ")
+    Page<RecruitmentPost> findAllBySalaryContaining(double salary, Pageable pageable);
+
+    @Query("select a from RecruitmentPost a where a.nameEmployer like %?1%   ")
+    Page<RecruitmentPost> findAllByNameEmployerContaining(String nameEmployer, Pageable pageable);
+
+    Page<RecruitmentPost> findAllByField(String field, Pageable pageable);
+
+
+    @Query("select r from RecruitmentPost r where lower(r.title) like lower(concat('%',:search,'%') ) " +
+            "or lower(r.minSalary)like lower(concat('%',:search,'%') ) " +
+            "or lower(r.expectation)like lower(concat('%',:search,'%') ) "+
+            "or lower(r.location)like lower(concat('%',:search,'%') ) "
+    )
+    Page<RecruitmentPost> searchAdvanced(@Param("search") String search,Pageable pageable);
+
+
+
+
+
 
 
 

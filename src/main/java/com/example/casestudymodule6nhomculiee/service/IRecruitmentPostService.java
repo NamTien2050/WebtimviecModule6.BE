@@ -11,5 +11,13 @@ public interface IRecruitmentPostService extends IGeneralService<RecruitmentPost
     List<RecruitmentPost> findAllBySalaryHot();
     List<RecruitmentPost> findAllByFiledHot();
     Page<RecruitmentPost> findAllPage(Pageable pageable);
-    Page<RecruitmentPost> findByTitleAndLocationAndSalary(String t, String l, double s, Pageable pageable);
+    Page<RecruitmentPost> findByTitleAndLocationAndSalary(String t, String l, double min, Pageable pageable);
+
+    Page<RecruitmentPost> findByTitleAndLocation(String t, String l, Pageable pageable);
+    Page<RecruitmentPost> findByTitleAndSalary(String t, double salary, Pageable pageable);
+    Page<RecruitmentPost> findByLocationAndSalary(String location, double salary, Pageable pageable);
+    Page<RecruitmentPost> findAllByTitleContaining(String title, Pageable pageable);
+    Page<RecruitmentPost> findAllByNameEmployerContaining(String nameEmployer, Pageable pageable);
+    Page<RecruitmentPost> findAllByField(String field, Pageable pageable);
+    Page<RecruitmentPost> findAllPageField(String name,Pageable pageable);
 }
