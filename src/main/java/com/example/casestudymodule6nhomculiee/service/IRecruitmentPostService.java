@@ -8,4 +8,5 @@ public interface IRecruitmentPostService extends IGeneralService<RecruitmentPost
     Iterable<RecruitmentPost> findRecruitmentPostByAppUser_Id(Long id);
     Page<RecruitmentPost> findAllPage(Pageable pageable);
     Page<RecruitmentPost> findAllByField(String field, Pageable pageable);
+    Page<RecruitmentPost> findALlByLocation(String location, Pageable pageable);
 }

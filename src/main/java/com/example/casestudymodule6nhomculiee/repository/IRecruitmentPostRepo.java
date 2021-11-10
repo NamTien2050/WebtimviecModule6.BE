@@ -19,4 +19,6 @@ public interface IRecruitmentPostRepo  extends JpaRepository<RecruitmentPost, Lo
 
    // Iterable<RecruitmentPost> findAllByAppUser(AppUser appUser);
    Page<RecruitmentPost> findAllByField(String field, Pageable pageable);
+
+   Page<RecruitmentPost> findAllByLocation(String location, Pageable pageable);
 }

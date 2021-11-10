@@ -87,15 +87,15 @@ public class RestLoginController {
 
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> Register(@RequestBody AppUser appUser) {
+    @RequestMapping(value = "/register/{id}", method = RequestMethod.POST)
+    public ResponseEntity<?> Register(@RequestBody AppUser appUser, @PathVariable Long id) {
         if (userService.existsByUsername(appUser.getUsername())) {
             return new ResponseEntity<>(new RespondMessage("no_user"), HttpStatus.OK);
         }
         if (userService.existsByEmail(appUser.getEmail())) {
             return new ResponseEntity<>(new RespondMessage("no_email"), HttpStatus.OK);
         }
-        AppRole role = roleService.findById(3L).get();
+        AppRole role = roleService.findById(id).get();
         System.out.println(role.getName());
         appUser.setRoll(role);
         appUser.setStatus(false);
@@ -221,12 +221,28 @@ public class RestLoginController {
                 fieldList.add(object);
             }
         }
-        return new ResponseEntity<>(fieldList,HttpStatus.OK);
+        return new ResponseEntity<>(fieldList, HttpStatus.OK);
     }
 
     @GetMapping("/getRecruitmentPostByField/{field}")
-    public ResponseEntity<?>getRecruitmentPostByField(@PathVariable String field, Pageable pageable){
+    public ResponseEntity<?> getRecruitmentPostByField(@PathVariable String field, Pageable pageable) {
         Page<RecruitmentPost> recruitmentPosts = recruitmentPostService.findAllByField(field, pageable);
         return new ResponseEntity<>(recruitmentPosts, HttpStatus.OK);
     }
+
+//    @GetMapping("/getLocationList")
+//    public ResponseEntity<?> getLocationList() {
+//        List<String> locationList = new ArrayList<>();
+//        List<RecruitmentPost> recruitmentPosts = (List<RecruitmentPost>) recruitmentPostService.findAll();
+//        for (int i = 0; i < recruitmentPosts.size(); i++) {
+//            String object = recruitmentPosts.get(i).getLocation();
+//            if (!locationList.contains(object)) {
+//                locationList.add(object);
+//            }
+//        }
+//    @GetMapping("/getRecruitmentPostByLocation/{location}")
+//    public ResponseEntity<?>getRecruitmentPostByLocation(@PathVariable String location,Pageable pageable){
+//        Page<RecruitmentPost> recruitmentPosts = recruitmentPostService.findALlByLocation(location, pageable);
+//        return new ResponseEntity<>(recruitmentPosts,HttpStatus.OK);
+//    }
 }
