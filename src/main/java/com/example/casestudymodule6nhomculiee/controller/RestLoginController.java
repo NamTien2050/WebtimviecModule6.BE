@@ -280,7 +280,7 @@ public class RestLoginController {
     }
     @GetMapping("/recruitmentPostPage")
     public ResponseEntity<?> pageRecruitmentPost(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
-        Page<RecruitmentPost> recruitmentPostPage = recruitmentPostService.findAllPage(pageable);
+        Page<RecruitmentPost> recruitmentPostPage = recruitmentPostService.findAllByStatusIsTrue(pageable);
         if(recruitmentPostPage.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -321,10 +321,8 @@ public class RestLoginController {
         return new ResponseEntity<>(recruitmentPosts, HttpStatus.OK);
     }
     @GetMapping("/searchAdvanced")
-    public ResponseEntity<Iterable<RecruitmentPost>> searchAdvanced(@RequestParam(name = "search") String search, Pageable pageable) {
-//        RecruitmentPost recruitmentPost = (RecruitmentPost) iRecruitmentPostService.searchAdvanced(search);
-//        model.addAllAttributes("recruitmentPosts", recruitmentPost);
-        Page<RecruitmentPost> postList = recruitmentPostService.findAllPageField(search,pageable);
+    public ResponseEntity<Page<RecruitmentPost>> searchAdvanced(@RequestParam(name = "search") String search, Pageable pageable) {
+        Page<RecruitmentPost> postList = recruitmentPostService.searchAdvanced(pageable, search);
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 

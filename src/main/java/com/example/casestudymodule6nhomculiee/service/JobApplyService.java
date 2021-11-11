@@ -28,4 +28,7 @@ public class JobApplyService {
     public List<JobApply> notify(AppUser appUser){
         return iJobApplyRepo.notify(appUser,true);
     }
+    public List<JobApply> save(AppUser appUser){
+        return iJobApplyRepo.Save(appUser,false);
+    }
 }

@@ -83,7 +83,12 @@ public class RecruitmentPostService implements IRecruitmentPostService{
     }
 
     @Override
-    public Page<RecruitmentPost> findAllPageField(String search,Pageable pageable) {
-        return recruitmentPostRepo.searchAdvanced(search,pageable);
+    public Page<RecruitmentPost> searchAdvanced(Pageable pageable,String search) {
+        return recruitmentPostRepo.searchAdvanced( pageable,search);
+    }
+
+    @Override
+    public Page<RecruitmentPost> findAllByStatusIsTrue(Pageable pageable) {
+        return recruitmentPostRepo.findAllByStatusIsTrue(pageable);
     }
 }

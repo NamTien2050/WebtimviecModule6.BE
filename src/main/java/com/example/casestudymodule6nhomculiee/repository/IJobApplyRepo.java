@@ -20,4 +20,7 @@ public interface IJobApplyRepo extends JpaRepository<JobApply,Long> {
     @Query("select a from JobApply a where a.appUser = ?1 and a.status= ?2" )
     List<JobApply> notify(AppUser appUser, boolean status);
 
+    @Query("select a from JobApply a where a.appUser = ?1 and a.status= ?2" )
+    List<JobApply> Save(AppUser appUser, boolean status);
+
 }

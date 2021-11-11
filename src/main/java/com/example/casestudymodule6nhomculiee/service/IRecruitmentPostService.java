@@ -19,5 +19,8 @@ public interface IRecruitmentPostService extends IGeneralService<RecruitmentPost
     Page<RecruitmentPost> findAllByTitleContaining(String title, Pageable pageable);
     Page<RecruitmentPost> findAllByNameEmployerContaining(String nameEmployer, Pageable pageable);
     Page<RecruitmentPost> findAllByField(String field, Pageable pageable);
-    Page<RecruitmentPost> findAllPageField(String name,Pageable pageable);
+    Page<RecruitmentPost> searchAdvanced(Pageable pageable,String search);
+
+    Page<RecruitmentPost> findAllByStatusIsTrue(Pageable pageable);
+
 }

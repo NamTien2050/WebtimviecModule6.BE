@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +55,14 @@ public class RestAdminController {
     }
     @GetMapping("/showAllUser")
     public ResponseEntity<?> showAllUser(){
+        List<AppUser> listUser = new ArrayList<>();
         List<AppUser> list = appUserService.showAll();
-        return new ResponseEntity<>( list,HttpStatus.ACCEPTED)  ;
+        for(int i =0;i<list.size();i++){
+            if(list.get(i).getRoll().getName() != "ROLE_ADMIN"){
+                listUser.add(list.get(i));
+            }
+        }
+        return new ResponseEntity<>( listUser,HttpStatus.ACCEPTED)  ;
 
     }
     @GetMapping("/lockUserById/{id}")

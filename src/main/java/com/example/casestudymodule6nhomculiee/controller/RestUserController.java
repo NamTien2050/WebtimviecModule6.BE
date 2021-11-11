@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,6 +48,17 @@ public class RestUserController {
         AppUser appUser = appUserService.findById(id);
         List<JobApply> list = jobApplyService.notify(appUser);
         return new ResponseEntity<>(list, HttpStatus.ACCEPTED)  ;
+    }
+
+    @GetMapping("/save/{id}")
+    public ResponseEntity<?> Save(@PathVariable Long id){
+        AppUser appUser = appUserService.findById(id);
+        List<RecruitmentPost> recruitmentPosts = new ArrayList<>();
+        List<JobApply> list = jobApplyService.save(appUser);
+        for(int i =0;i<list.size();i++){
+            recruitmentPosts.add(list.get(i).getRecuitmentPost());
+        }
+        return new ResponseEntity<>(recruitmentPosts,HttpStatus.ACCEPTED);
     }
 
 

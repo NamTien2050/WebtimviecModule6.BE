@@ -48,7 +48,7 @@ public interface IRecruitmentPostRepo  extends JpaRepository<RecruitmentPost, Lo
     Page<RecruitmentPost> findAllByLocationContaining(String location, Pageable pageable);
 
 
-    @Query("select a from RecruitmentPost a where a.minSalary > ?2 and a.minSalary  < ?2 +5  ")
+    @Query("select a from RecruitmentPost a where a.minSalary < ?2 and a.minSalary +5 > ?2  ")
     Page<RecruitmentPost> findAllBySalaryContaining(double salary, Pageable pageable);
 
     @Query("select a from RecruitmentPost a where a.nameEmployer like %?1%   ")
@@ -59,10 +59,17 @@ public interface IRecruitmentPostRepo  extends JpaRepository<RecruitmentPost, Lo
 
     @Query("select r from RecruitmentPost r where lower(r.title) like lower(concat('%',:search,'%') ) " +
             "or lower(r.minSalary)like lower(concat('%',:search,'%') ) " +
-            "or lower(r.expectation)like lower(concat('%',:search,'%') ) "+
+            "or lower(r.maxSalary)like lower(concat('%',:search,'%') ) " +
+            "or lower(r.skill)like lower(concat('%',:search,'%') ) " +
+            "or lower(r.field)like lower(concat('%',:search,'%') ) " +
+            "or lower(r.location)like lower(concat('%',:search,'%') ) " +
+            "or lower(r.nameEmployer)like lower(concat('%',:search,'%') ) "+
             "or lower(r.location)like lower(concat('%',:search,'%') ) "
     )
-    Page<RecruitmentPost> searchAdvanced(@Param("search") String search,Pageable pageable);
+    Page<RecruitmentPost> searchAdvanced(@Param("search") Pageable pageable, String search);
+
+    Page<RecruitmentPost> findAllByStatusIsTrue(Pageable pageable);
+    ;
 
 
 
